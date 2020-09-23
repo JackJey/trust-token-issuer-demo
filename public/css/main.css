@@ -44,7 +44,16 @@ button {
   display: block;
 
   font-size: 2rem;
-  padding: 1rem;
+  width: 6rem;
+  height: 3rem;
+}
+
+section > ul {
+  margin-block-start: 1rem;
+}
+
+section > ul > li {
+  visibility: hidden;
 }
 
 button:hover {
