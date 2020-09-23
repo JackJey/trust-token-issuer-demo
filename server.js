@@ -1,34 +1,82 @@
-// server.js
-// where your node app starts
-
-// we've started you off with Express (https://expressjs.com/)
-// but feel free to use whatever libraries or frameworks you'd like through `package.json`.
+const fs = require("fs");
+const childProcess = require("child_process");
+const util = require("util");
+const exec = util.promisify(childProcess.exec);
 const express = require("express");
 const app = express();
 
-// our default array of dreams
-const dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
+app.use(express.static("."));
 
-// make all the files in 'public' available
-// https://expressjs.com/en/starter/static-files.html
-app.use(express.static("public"));
-
-// https://expressjs.com/en/starter/basic-routing.html
-app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/views/index.html");
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
 });
 
-// send the default array of dreams to the webpage
-app.get("/dreams", (request, response) => {
-  // express helps us take JS objects and send them as JSON
-  response.json(dreams);
+app.get("/.well-known/trust-token/key-commitment", (req, res) => {
+  console.log(req.path);
+  const { trust_token } = require("./package.json");
+  const { ISSUER, protocol_version, batchsize, expiry } = trust_token;
+  const srrkey = fs
+    .readFileSync("./keys/srr_pub_key.txt")
+    .toString()
+    .trim();
+  const Y = fs
+    .readFileSync("./keys/pub_key.txt")
+    .toString()
+    .trim();
+
+  const COMMITMENT = {};
+  COMMITMENT[ISSUER] = {
+    protocol_version,
+    batchsize,
+    srrkey,
+    "1": { Y, expiry }
+  };
+  
+  
+  res.set({
+    'Access-Control-Allow-Origin': '*',
+  })
+
+  res.json({
+    ISSUER,
+    COMMITMENT
+  });
 });
 
-// listen for requests :)
+app.post(`/.well-known/trust-token/issuance`, async (req, res) => {
+  console.log(req.path);
+  const sec_trust_token = req.headers["sec-trust-token"];
+  const result = await exec(`./bin/main --issue ${sec_trust_token}`);
+  const token = result.stdout;
+  res.set({
+    'Access-Control-Allow-Origin': '*',
+  })
+  res.append("sec-trust-token", token);
+  res.send();
+});
+
+app.post(`/.well-known/trust-token/redemption`, async (req, res) => {
+  console.log(req.path);
+  const sec_trust_token = req.headers["sec-trust-token"];
+  const result = await exec(`./bin/main --redeem ${sec_trust_token}`);
+  const token = result.stdout;
+  res.set({
+    'Access-Control-Allow-Origin': '*',
+  })
+  res.append("sec-trust-token", token);
+  res.send();
+});
+
+app.post(`/.well-known/trust-token/send-srr`, async (req, res) => {
+  console.log(req.path);
+  const sec_signed_redemption_record =
+    req.headers["sec-signed-redemption-record"];
+  res.set({
+    'Access-Control-Allow-Origin': '*',
+  })
+  res.send(sec_signed_redemption_record);
+});
+
 const listener = app.listen(process.env.PORT, () => {
-  console.log("Your app is listening on port " + listener.address().port);
+  console.log(`listening on port ${listener.address().port}`);
 });

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Trust Token demo</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="origin-trial"
+      content="AtWNSX/yZIjh0WfYOmOX5HSbggmtd7C5jMNUDdWdB3gRUPnLD1QBrwAI/BJWEgzn8OwTU7hndh8sLOJHp5iiugEAAAB0eyJvcmlnaW4iOiJodHRwczovL3RydXN0LXRva2VuLWlzc3Vlci5nbGl0Y2gubWU6NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjA0NDY2NjIzLCJpc1N1YmRvbWFpbiI6dHJ1ZX0="
+    />
+    <link rel="stylesheet" href="css/main.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/cbor-js-unofficial@0.1.0-a4/cbor.min.js"
+      defer
+    ></script>
+    <script src="public/js/issuer.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <h1>Trust Token Issuer demo</h1>
+
+      <section>
+        <h2>Are You a Human ?</h2>
+        <button id="yes">Yes</button>
+      </section>
+
+      <hr />
+
+      <details>
+        <summary>Details</summary>
+
+        <p>
+          This site demonstrates Trust Token
+          <a href="https://github.com/WICG/trust-token-api#trust-token-issuance"
+            >issuance</a
+          >, using
+          <a href="https://boringssl.googlesource.com/boringssl/">BoringSSL</a>
+          to create an issuance service.
+        </p>
+        <p>
+          View code:
+          <a href="https://glitch.com/edit/#!/trust-token-issuer">Glitch</a>,
+          <a href="https://github.com/JackJey/trust-token-issuer-demo">GitHub</a>.
+        </p>
+        <h3>Find out more</h3>
+        <ul>
+          <li>
+            <a href="http://www.chromium.org/updates/trust-token"
+              >Trust Token API: The Chromium Projects</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://groups.google.com/a/chromium.org/g/blink-dev/c/UIvia1WwIhk"
+              >Intent to Experiment: Trust Token API</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://bugs.chromium.org/p/chromium/issues/detail?id=1014199"
+              >Chromium tracking bug</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/WICG/trust-token-api#trust-token-api-explainer"
+              >API explainer</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/WICG/trust-token-api/blob/master/ISSUER_PROTOCOL.md"
+              >TrustTokenV1 Issuer Protocol</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://source.chromium.org/chromium/chromium/src/+/master:third_party/boringssl/src/crypto/trust_token/trust_token_test.cc"
+              >boringssl/src/crypto/trust_token/trust_token_test.cc</a
+            >
+          </li>
+          <li>
+            <a href="https://web.dev/trust-tokens/"
+              >Getting started with Trust Tokens
+            </a>
+          </li>
+        </ul>
+      </details>
+    </main>
+  </body>
+</html>

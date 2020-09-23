@@ -1,30 +1,100 @@
-# hello-express
+# Trust Token DEMO
 
-A server that serves a webpage, its resources, and some data
+DEMO of Trust Token API based on boringssl.
+
+https://trust-token-demo.glitch.me/
+
+## How to use
+
+1. open Google Chrome Canary &gt; M87 with flag shown in page
+2. click Yes button for "Are you a human"
+3. you can see Redemption Record in page
+
+## How to build
+
+### boringssl
+
+this demo requires boringssl, kick `./install-boringssl.sh` for download/build.
+
+```sh
+$ ./install-boringssl.sh
+```
+
+### build c command
+
+build [c](./c) command with boringssl.
+
+```sh
+$ make
+```
+
+### up http server
+
+run http demo with express
+
+```sh
+$ npm install
+$ npm start
+```
+
+note: you need origin trials token.
+
+## API
+
+### Key Commitment
+
+```
+GET /.well-known/trust-token/key-commitment
+```
+
+key-commitments in JSON format for browser.
+
+### Issue Request
+
+```
+POST /.well-known/trust-token/request
+```
+
+Trust Token Issue request endpoint
+
+### Redemption
+
+```
+POST /.well-known/trust-token/redemption
+```
+
+SRR Token Redemption request endpoint
+
+### Send SRR
+
+```
+POST /.well-known/trust-token/send-srr
+```
+
+Send SRR endpoint, which echo back Sec-Signed-Redemtption-Record header which client sends as response.
 
 
-## Your Project
+## Command
 
-On the front-end,
+[bin/main](./bin/main) is build result of [c/main.c](c/main.c).
 
-- Edit `views/index.html` to change the content of the webpage
-- `public/client.js` is the javacript that runs when you load the webpage
-- `public/style.css` is the styles for `views/index.html`
-- Drag in `assets`, like images or music, to add them to your project
+this command has flag for trust token operation.
 
-On the back-end,
+```sh
+$ main --issue $REQUEST
+$ main --redeem $REQUEST
+$ main --key-generate
+```
 
-- your app starts at `server.js`
-- add frameworks and packages in `package.json`
-- safely store app secrets in `.env` (nobody can see this but you and people you invite)
+### --issue
 
-Click `Show` in the header to see your app live. Updates to your code will instantly deploy.
+take issueance request (Sec-Trust-Token HTTP Header) and return a issuance response.
 
+### --redeem
 
-## Made by [Glitch](https://glitch.com/)
+take redemption request (Sec-Trust-Token HTTP Header) and return a redemption response.
 
-**Glitch** is the friendly community where you'll build the app of your dreams. Glitch lets you instantly create, remix, edit, and host an app, bot or site, and you can invite collaborators or helpers to simultaneously edit code with you.
+### --key-generate
 
-Find out more [about Glitch](https://glitch.com/about).
-
-( ᵔ ᴥ ᵔ )
+generate, Priv/Pub key for trust-token and ED25519 keypair.
+save them into each files in [./keys](./keys) dir.

@@ -1,0 +1,88 @@
+:root {
+  --desktop-font-size: 16px;
+  --mobile-font-size: 22px;
+}
+
+body {
+  font-family: "Google Sans", sans-serif;
+  font-weight: 400;
+  width: 90vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0 auto;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+section {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+details {
+  max-width: 100%;
+  min-width: 30%;
+}
+
+button {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  color: #444;
+  cursor: pointer;
+  display: block;
+
+  font-size: 2rem;
+  padding: 1rem;
+}
+
+button:hover {
+  background-color: #ccc;
+  color: black;
+}
+
+hr {
+  display: block;
+  width: 100%;
+}
+
+h1 {
+  font-weight: 400;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+h2 {
+  font-weight: 400;
+  text-align: center;
+}
+
+/** in detail **/
+a {
+  color: #3740ff;
+}
+
+a:hover {
+  color: #3740ff;
+  text-decoration: none;
+}
+
+ul {
+  margin: 0;
+  padding-inline-start: 1rem;
+}
+
+li {
+  line-height: 2rem;
+}
