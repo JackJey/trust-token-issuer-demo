@@ -41,15 +41,39 @@ document.on("DOMContentLoaded", async e => {
     }, 1000);
   });
 
-  $("#refresh").on("click", async() => {
+  $("#refresh").on("click", async () => {
     // redemption request
-    await fetch(`/.well-known/trust-token/redemption`, {
+    await fetch(`${ISSUER}/.well-known/trust-token/redemption`, {
       method: "POST",
       trustToken: {
         type: "srr-token-redemption",
         issuer: ISSUER,
         refreshPolicy: "refresh"
       }
-    });   
-  })
+    });
+
+    // send SRR and echo Sec-Signed-Eedemption-Record
+    const res = await fetch(`${ISSUER}/.well-known/trust-token/send-srr`, {
+      method: "POST",
+      trustToken: {
+        type: "send-srr",
+        issuer: ISSUER, // deprecated
+        issuers: [ISSUER]
+      }
+    });
+    const body = await res.text();
+    console.log(body);
+
+    // TODO: structured-header decode
+    const base64 = atob(body.match(/redemption-record=:(.*):/)[1])
+      .split(",")[0]
+      .match(/body=:(.*):/)[1];
+    const bytes = base64decode(base64);
+    const result = CBOR.decode(bytes.buffer);
+    
+    window.result = result
+    console.log(result)
+    
+    console.log(result['client-data']['key-hash'])
+  });
 });
