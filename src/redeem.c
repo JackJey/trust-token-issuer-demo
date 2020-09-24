@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <openssl/evp.h>
 #include <openssl/trust_token.h>
+#include "config.h"
 #include "util.h"
-
 
 /**
  * success: 1
@@ -22,7 +22,7 @@ int redeem(uint8_t *request_base64, size_t request_base64_len, uint8_t **respons
 
   // 3. Trust Token Issuer
   const TRUST_TOKEN_METHOD *method = TRUST_TOKEN_experiment_v1();
-  uint16_t issuer_max_batchsize = 10;
+  uint16_t issuer_max_batchsize = ISSUER_MAX_BATCHSIZE;
   TRUST_TOKEN_ISSUER* issuer = TRUST_TOKEN_ISSUER_new(method, issuer_max_batchsize);
   if (!issuer) {
     fprintf(stderr, "failed to create TRUST_TOKEN Issuer. maybe max_batchsize(%i) is too large\n", issuer_max_batchsize);
@@ -97,7 +97,7 @@ int redeem(uint8_t *request_base64, size_t request_base64_len, uint8_t **respons
   uint8_t  *client_data;
   size_t   client_data_len;
   uint64_t redemption_time;
-  int lifetime = 600;
+  int lifetime = ISSUER_LIFETIME;
   if (!TRUST_TOKEN_ISSUER_redeem(issuer,
                                  &response, &response_len,
                                  &rtoken,

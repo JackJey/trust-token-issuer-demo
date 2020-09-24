@@ -2,6 +2,7 @@
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 #include <openssl/trust_token.h>
+#include "config.h"
 #include "util.h"
 
 /**
@@ -22,7 +23,7 @@ int issue(uint8_t *request_base64, size_t request_base64_len, uint8_t **response
 
   // 3. Trust Token Issuer
   const TRUST_TOKEN_METHOD *method = TRUST_TOKEN_experiment_v1();
-  uint16_t issuer_max_batchsize = 10;
+  uint16_t issuer_max_batchsize = ISSUER_MAX_BATCHSIZE;
   TRUST_TOKEN_ISSUER* issuer = TRUST_TOKEN_ISSUER_new(method, issuer_max_batchsize);
   if (!issuer) {
     fprintf(stderr, "failed to create TRUST_TOKEN Issuer. maybe max_batchsize(%i) is too large\n", issuer_max_batchsize);
@@ -103,9 +104,9 @@ int issue(uint8_t *request_base64, size_t request_base64_len, uint8_t **response
   // 1:success, 0:error
   uint8_t* response = NULL;
   size_t   response_len, tokens_issued;
-  size_t   max_issuance     = 10;
-  uint8_t  public_metadata  = 0x0001;
-  uint8_t  private_metadata = 0;
+  size_t   max_issuance     = ISSUER_MAX_ISSUANCE;
+  uint8_t  public_metadata  = ISSUER_PUBLIC_METADATA;
+  uint8_t  private_metadata = ISSUER_PRIVATE_METADATA;
   if (!TRUST_TOKEN_ISSUER_issue(issuer,
                                 &response, &response_len,
                                 &tokens_issued,
