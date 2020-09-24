@@ -13,7 +13,7 @@ main: $(OBJS) src/config.h
 	$(CC) src/main.c -o $(MAIN) $(OBJS) $(CFLAGS)
 
 example: src/example.c src/config.h
-	$(CC) src/example.c -o ./bin/example $(CFLAGS)
+	$(CC) src/example.c -o ./bin/example src/util.o $(CFLAGS)
 	./bin/example
 
 .PHONY: generate_key, clean, test

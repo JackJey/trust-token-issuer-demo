@@ -9,6 +9,7 @@
 #include <openssl/sha.h>
 #include <openssl/trust_token.h>
 #include "config.h"
+#include "util.h"
 
 
 int main(int argc, char **argv) {
@@ -244,6 +245,11 @@ int main(int argc, char **argv) {
   }
   fprintf(stderr, "CLIENT(finish_redemption) srr(%zu): %p\n", srr_len, srr);
   fprintf(stderr, "CLIENT(finish_redemption) sig(%zu): %p\n", sig_len, sig);
+
+  fprintf(stderr, "SRR: %s\n", srr);
+  hexdump(srr, srr_len);
+
+
 
   // 9. Private Metadata
   // decode |encrypted_bit| with metadata key |key| & |nonce|
