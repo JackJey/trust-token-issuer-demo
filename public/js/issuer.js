@@ -40,4 +40,16 @@ document.on("DOMContentLoaded", async e => {
       location.href = back_url; // open redirecter !!?
     }, 1000);
   });
+
+  $("#refresh").on("click", async() => {
+    // redemption request
+    await fetch(`/.well-known/trust-token/redemption`, {
+      method: "POST",
+      trustToken: {
+        type: "srr-token-redemption",
+        issuer: ISSUER,
+        refreshPolicy: "refresh"
+      }
+    });   
+  })
 });
