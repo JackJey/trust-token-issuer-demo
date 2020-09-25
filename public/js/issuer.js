@@ -36,9 +36,9 @@ document.on("DOMContentLoaded", async e => {
 
     setTimeout(() => {
       const query = new URLSearchParams(location.search);
-      const back_url = query.get("back");
-      if (back_url) {
-        location.href = back_url; // open redirecter !!?
+      const back = query.get("back");
+      if (back) {
+        location.href = back; // open redirecter !!?
       }
     }, 1000);
   });
@@ -56,14 +56,22 @@ document.on("DOMContentLoaded", async e => {
 
     // send SRR and echo Sec-Signed-Eedemption-Record
     const res = await fetch(`${ISSUER}/.well-known/trust-token/send-srr`, {
+      headers: new Headers({
+        "Signed-Headers": "sec-signed-redemption-record, sec-time"
+      }),
+
       method: "POST",
       trustToken: {
         type: "send-srr",
         issuer: ISSUER, // deprecated
-        issuers: [ISSUER]
+        issuers: [ISSUER],
+        includeTimestampHeader: true,
+        signRequestData: "include",
+        additionalSigningData: "additional_signing_data"
       }
     });
+
     const body = await res.json();
-    console.log(JSON.stringify(body, ' ', ' '));
+    console.log(JSON.stringify(body, " ", " "));
   });
 });
