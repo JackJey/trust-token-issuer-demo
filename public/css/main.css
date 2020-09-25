@@ -35,7 +35,7 @@ details {
   min-width: 30%;
 }
 
-button {
+button#yes {
   background-color: #eee;
   border: 1px solid #ccc;
   border-radius: 2px;
