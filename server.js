@@ -107,13 +107,15 @@ app.post(`/.well-known/trust-token/send-srr`, async (req, res) => {
 
   console.log(srr);
 
-  // verify
+  // verify signature and make sure body doen't altered
   const signature = srr.record.signature;
   const keystr = fs.readFileSync("./keys/srr_pub_key.txt").toString();
   const public_key = Buffer.from(keystr, "base64");
   const message = srr.record.body_raw;
   console.log(ed25519.Verify(message, signature, public_key));
 
+   
+  
   res.send(srr);
 });
 
