@@ -1,5 +1,7 @@
 dependencies:
+  cbor: 5.1.0
   express: 4.17.1
+  structured-headers: github.com/JackJey/structured-headers/7d49c58a0d4ba7ce11735af24807c807edb70421
 packages:
   /accepts/1.3.7:
     dependencies:
@@ -14,6 +16,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-ml9pkFGx5wczKPKgCJaLZOopVdI=
+  /bignumber.js/9.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-t/OYhhJ2SD+YGBQcjY8GzzDHEk9f3nerxjtfa6tlMXfe7frs/WozhvCNoGvpM0P3bNf3Gq5ZRMlGr5f3r4/N8A==
   /body-parser/1.19.0:
     dependencies:
       bytes: 3.1.0
@@ -37,6 +43,15 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha512-zauLjrfCG+xvoyaqLoV8bLVXXNGC4JqlxFCutSDWA6fJrTo2ZuvLYTqZ7aHBLZSMOopbzwv8f+wZcVzfVTI2Dg==
+  /cbor/5.1.0:
+    dependencies:
+      bignumber.js: 9.0.0
+      nofilter: 1.0.4
+    dev: false
+    engines:
+      node: '>=6.0.0'
+    resolution:
+      integrity: sha512-qzEc7kUShdMbWTaUH7X+aHW8owvBU3FS0dfYR1lGYpoZr0mGJhhojLlZJH653x/DfeMZ56h315FRNBUIG1R7qg==
   /content-disposition/0.5.3:
     dependencies:
       safe-buffer: 5.1.2
@@ -257,6 +272,12 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==
+  /nofilter/1.0.4:
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-N8lidFp+fCz+TD51+haYdbDGrcBWwuHX40F5+z0qkUjMJ5Tp+rdSuAkMJ9N9eoolDlEVTf6u5icM+cNKkKW2mA==
   /on-finished/2.3.0:
     dependencies:
       ee-first: 1.1.1
@@ -389,8 +410,19 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
+  github.com/JackJey/structured-headers/7d49c58a0d4ba7ce11735af24807c807edb70421:
+    dev: false
+    name: structured-headers
+    prepare: true
+    requiresBuild: true
+    resolution:
+      registry: 'https://registry.npmjs.org/'
+      tarball: 'https://codeload.github.com/JackJey/structured-headers/tar.gz/7d49c58a0d4ba7ce11735af24807c807edb70421'
+    version: 0.2.0
 registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
+  cbor: ^5.1.0
   express: ^4.17.1
+  structured-headers: 'git+https://github.com/JackJey/structured-headers.git'

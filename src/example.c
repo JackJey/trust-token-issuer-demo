@@ -8,6 +8,9 @@
 #include <openssl/rand.h>
 #include <openssl/sha.h>
 #include <openssl/trust_token.h>
+#include "config.h"
+#include "util.h"
+
 
 int main(int argc, char **argv) {
   // TRUST_TOKEN_experiment_v1 is an experimental Trust Tokens protocol using
@@ -16,7 +19,7 @@ int main(int argc, char **argv) {
   uint8_t  priv_key[TRUST_TOKEN_MAX_PRIVATE_KEY_SIZE];
   uint8_t  pub_key[TRUST_TOKEN_MAX_PUBLIC_KEY_SIZE];
   size_t   priv_key_len, pub_key_len;
-  uint32_t key_id = 0x0001;
+  uint32_t key_id = KEY_ID;
 
   // generate Trust Token keypair
   // |id|: id for key
@@ -36,7 +39,7 @@ int main(int argc, char **argv) {
   // generate |TRUST_TOKEN_CLIENT|
   // bactch sould be smaller than |max_batchsize|
   // error if |max_batchsize| is too big
-  uint16_t client_max_batchsize = 10;
+  uint16_t client_max_batchsize = CLIENT_MAX_BATCHSIZE;
   TRUST_TOKEN_CLIENT* client = TRUST_TOKEN_CLIENT_new(method, client_max_batchsize);
   if (!client) {
     fprintf(stderr, "failed to create TRUST_TOKEN Client. maybe max_batchsize(%i) is too large\n", client_max_batchsize);
@@ -49,7 +52,7 @@ int main(int argc, char **argv) {
   // |const| if pointer then no-mutating else mutating
   // bactch sould be smaller than |max_batchsize|
   // error if |max_batchsize| is too big
-  uint16_t issuer_max_batchsize = 10;
+  uint16_t issuer_max_batchsize = ISSUER_MAX_BATCHSIZE;
   TRUST_TOKEN_ISSUER* issuer = TRUST_TOKEN_ISSUER_new(method, issuer_max_batchsize);
   if (!issuer) {
     fprintf(stderr, "failed to create TRUST_TOKEN Issuer. maybe max_batchsize(%i) is too large\n", issuer_max_batchsize);
@@ -126,7 +129,7 @@ int main(int argc, char **argv) {
   // 1:success, 0:error
   uint8_t* request = NULL;
   size_t request_len;
-  size_t count = 10;
+  size_t count = CLIENT_ISSUANCE_COUNT;
   if (!TRUST_TOKEN_CLIENT_begin_issuance(client, &request, &request_len, count)) {
     fprintf(stderr, "failed to begin issuance in TRUST_TOKEN Client.\n");
     exit(0);
@@ -143,8 +146,8 @@ int main(int argc, char **argv) {
   uint8_t* response = NULL;
   size_t   resp_len, tokens_issued;
   size_t   max_issuance = count;
-  uint8_t  public_metadata = key_id;
-  uint8_t  private_metadata = 0;
+  uint8_t  public_metadata = KEY_ID;
+  uint8_t  private_metadata = ISSUER_PRIVATE_METADATA;
   if (!TRUST_TOKEN_ISSUER_issue(issuer,
                                 &response, &resp_len,
                                 &tokens_issued,
@@ -182,9 +185,9 @@ int main(int argc, char **argv) {
   // sign |data| and serialize into |out|
   // |time| unix time for issuer response validation
   // 1:success, 0:error
-  const uint8_t kClientData[] = "TEST CLIENT DATA";
-  uint64_t kRedemptionTime    = 13374242;
-  uint8_t  *redeem_request     = NULL;
+  const uint8_t kClientData[] = CLIENT_REDEMPTION_DATA;
+  uint64_t kRedemptionTime    = CLIENT_REDEMPTION_TIME;
+  uint8_t  *redeem_request    = NULL;
   size_t   redeem_request_len;
   if (!TRUST_TOKEN_CLIENT_begin_redemption(client,
                                            &redeem_request, &redeem_request_len,
@@ -211,7 +214,7 @@ int main(int argc, char **argv) {
   uint8_t  *client_data;
   size_t   client_data_len;
   uint64_t redemption_time;
-  int lifetime = 600;
+  int lifetime = ISSUER_LIFETIME;
   if (!TRUST_TOKEN_ISSUER_redeem(issuer,
                                  &redeem_resp, &redeem_resp_len,
                                  &rtoken,
@@ -243,12 +246,17 @@ int main(int argc, char **argv) {
   fprintf(stderr, "CLIENT(finish_redemption) srr(%zu): %p\n", srr_len, srr);
   fprintf(stderr, "CLIENT(finish_redemption) sig(%zu): %p\n", sig_len, sig);
 
+  fprintf(stderr, "SRR: %s\n", srr);
+  hexdump(srr, srr_len);
+
+
+
   // 9. Private Metadata
   // decode |encrypted_bit| with metadata key |key| & |nonce|
   // |TRUST_TOKEN_experiment_v1| 's nonce are SRR token-hash field.
   // |*out_value| is decrypt result (0 / 1)
   // 1:success, 0:error
-  const uint8_t kTokenHashDSTLabel[] = "TrustTokenV0 TokenHash";
+  const uint8_t kTokenHashDSTLabel[] = TOKEN_HASH;
   uint8_t token_hash[SHA256_DIGEST_LENGTH];
   SHA256_CTX sha_ctx;
   SHA256_Init(&sha_ctx);

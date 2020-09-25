@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <openssl/curve25519.h>
 #include <openssl/trust_token.h>
+#include "config.h"
 #include "util.h"
 #include "key_generator.h"
 
@@ -20,7 +21,7 @@ int key_generate(base64_keys_t *keys) {
           srr_pub_key[srr_pub_key_len];
 
   // KeyID of trust_token keys
-  uint32_t key_id = 0x0001;
+  uint32_t key_id = KEY_ID;
 
   // generate Trust Token keypair
   // 1:success, 0:error

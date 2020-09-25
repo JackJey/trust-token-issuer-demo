@@ -6,12 +6,14 @@
     "start": "PORT=8000 node server.js"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "structured-headers": "git+https://github.com/JackJey/structured-headers.git",
+    "cbor": "^5.1.0"
   },
   "trust_token": {
     "ISSUER": "https://trust-token-issuer.glitch.me/",
     "protocol_version": "TrustTokenV1",
-    "batchsize": 10,
+    "batchsize": 3,
     "expiry": "1622574000000000"
   }
 }

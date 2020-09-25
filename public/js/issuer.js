@@ -37,7 +37,9 @@ document.on("DOMContentLoaded", async e => {
     setTimeout(() => {
       const query = new URLSearchParams(location.search);
       const back_url = query.get("back");
-      location.href = back_url; // open redirecter !!?
+      if (back_url) {
+        location.href = back_url; // open redirecter !!?
+      }
     }, 1000);
   });
 
@@ -61,19 +63,7 @@ document.on("DOMContentLoaded", async e => {
         issuers: [ISSUER]
       }
     });
-    const body = await res.text();
-    console.log(body);
-
-    // TODO: structured-header decode
-    const base64 = atob(body.match(/redemption-record=:(.*):/)[1])
-      .split(",")[0]
-      .match(/body=:(.*):/)[1];
-    const bytes = base64decode(base64);
-    const result = CBOR.decode(bytes.buffer);
-    
-    window.result = result
-    console.log(result)
-    
-    console.log(result['client-data']['key-hash'])
+    const body = await res.json();
+    console.log(JSON.stringify(body, ' ', ' '));
   });
 });
