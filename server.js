@@ -4,8 +4,8 @@ const util = require("util");
 const exec = util.promisify(childProcess.exec);
 const express = require("express");
 const cbor = require("cbor");
-const sh = require('structured-headers');
-
+const sh = require("structured-headers");
+  const { trust_token } = require("./package.json");
 
 const app = express();
 
@@ -17,7 +17,6 @@ app.get("/", (req, res) => {
 
 app.get("/.well-known/trust-token/key-commitment", (req, res) => {
   console.log(req.path);
-  const { trust_token } = require("./package.json");
   const { ISSUER, protocol_version, batchsize, expiry } = trust_token;
   const srrkey = fs
     .readFileSync("./keys/srr_pub_key.txt")
@@ -35,11 +34,10 @@ app.get("/.well-known/trust-token/key-commitment", (req, res) => {
     srrkey,
     "1": { Y, expiry }
   };
-  
-  
+
   res.set({
-    'Access-Control-Allow-Origin': '*',
-  })
+    "Access-Control-Allow-Origin": "*"
+  });
 
   res.json({
     ISSUER,
@@ -53,8 +51,8 @@ app.post(`/.well-known/trust-token/issuance`, async (req, res) => {
   const result = await exec(`./bin/main --issue ${sec_trust_token}`);
   const token = result.stdout;
   res.set({
-    'Access-Control-Allow-Origin': '*',
-  })
+    "Access-Control-Allow-Origin": "*"
+  });
   res.append("sec-trust-token", token);
   res.send();
 });
@@ -65,16 +63,18 @@ app.post(`/.well-known/trust-token/redemption`, async (req, res) => {
   const result = await exec(`./bin/main --redeem ${sec_trust_token}`);
   const token = result.stdout;
   res.set({
-    'Access-Control-Allow-Origin': '*',
-  })
+    "Access-Control-Allow-Origin": "*"
+  });
   res.append("sec-trust-token", token);
   res.send();
 });
 
 function parseSRR(str) {
-  return sh.parseList(str).map((srr) => {
-    const issuer = srr.value
-    const redemption_record = sh.parseDictionary(srr['parameters']['redemption-record'].toString())
+  return sh.parseList(str).map(srr => {
+    const issuer = srr.value;
+    const redemption_record = sh.parseDictionary(
+      srr["parameters"]["redemption-record"].toString()
+    );
 
     const result = {
       issuer: srr.value,
@@ -82,26 +82,27 @@ function parseSRR(str) {
         body: cbor.decodeAllSync(redemption_record.body.value).pop(),
         signature: redemption_record.signature.value
       }
-    }
+    };
 
-    console.log(result)
-    return result
-  })
+    return result;
+  });
 }
-
 
 app.post(`/.well-known/trust-token/send-srr`, async (req, res) => {
   console.log(req.path);
   const sec_signed_redemption_record =
     req.headers["sec-signed-redemption-record"];
   res.set({
-    'Access-Control-Allow-Origin': '*',
-  })
+    "Access-Control-Allow-Origin": "*"
+  });
 
-  const srr = parseSRR(sec_signed_redemption_record)
-  
-  console.log(srr)
-  res.send(srr)
+  const records = parseSRR(sec_signed_redemption_record);
+  const {ISSUER} = trust_token
+  const record = records.filter(({ issuer }) => issuer == ISSUER).pop();
+
+  console.log(record);
+
+  res.send(record);
 });
 
 const listener = app.listen(process.env.PORT, () => {

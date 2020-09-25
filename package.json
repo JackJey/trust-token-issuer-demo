@@ -11,7 +11,7 @@
     "cbor": "^5.1.0"
   },
   "trust_token": {
-    "ISSUER": "https://trust-token-issuer.glitch.me/",
+    "ISSUER": "https://trust-token-issuer.glitch.me",
     "protocol_version": "TrustTokenV1",
     "batchsize": 3,
     "expiry": "1622574000000000"
