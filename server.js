@@ -5,7 +5,9 @@ const exec = util.promisify(childProcess.exec);
 const express = require("express");
 const cbor = require("cbor");
 const sh = require("structured-headers");
-  const { trust_token } = require("./package.json");
+const ed25519 = require("ed25519");
+
+const { trust_token } = require("./package.json");
 
 const app = express();
 
@@ -80,6 +82,7 @@ function parseSRR(str) {
       issuer: srr.value,
       record: {
         body: cbor.decodeAllSync(redemption_record.body.value).pop(),
+        body_raw: redemption_record.body.value,
         signature: redemption_record.signature.value
       }
     };
@@ -96,13 +99,22 @@ app.post(`/.well-known/trust-token/send-srr`, async (req, res) => {
     "Access-Control-Allow-Origin": "*"
   });
 
-  const records = parseSRR(sec_signed_redemption_record);
-  const {ISSUER} = trust_token
-  const record = records.filter(({ issuer }) => issuer == ISSUER).pop();
+  const signed_redemption_records = parseSRR(sec_signed_redemption_record);
+  const { ISSUER } = trust_token;
+  const srr = signed_redemption_records
+    .filter(({ issuer }) => issuer == ISSUER)
+    .pop();
 
-  console.log(record);
+  console.log(srr);
 
-  res.send(record);
+  // verify
+  const signature = srr.record.signature;
+  const keystr = fs.readFileSync("./keys/srr_pub_key.txt").toString();
+  const public_key = Buffer.from(keystr, "base64");
+  const message = srr.record.body_raw;
+  console.log(ed25519.Verify(message, signature, public_key));
+
+  res.send(srr);
 });
 
 const listener = app.listen(process.env.PORT, () => {
