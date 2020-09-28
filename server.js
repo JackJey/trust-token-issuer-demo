@@ -73,19 +73,24 @@ app.post(`/.well-known/trust-token/redemption`, async (req, res) => {
 
 app.post(`/.well-known/trust-token/send-srr`, async (req, res) => {
   console.log(req.path);
-  const srr               = sfv.parseList(req.headers["sec-signed-redemption-record"]);
-  const redemption_record = sfv.parseDict(Buffer.from(srr[0]['params']['redemption-record']).toString())
-  const {body, signature} = redemption_record
-  const public_key        = Buffer.from(fs.readFileSync("./keys/srr_pub_key.txt").toString(), 'base64')
+  const srr = sfv.parseList(req.headers["sec-signed-redemption-record"]);
+  const redemption_record = sfv.parseDict(
+    Buffer.from(srr[0]["params"]["redemption-record"]).toString()
+  );
+  const { body, signature } = redemption_record;
+  const public_key = Buffer.from(
+    fs.readFileSync("./keys/srr_pub_key.txt").toString(),
+    "base64"
+  );
   const signed = await ed25519.verify(signature.value, body.value, public_key);
 
-  console.log(signed)
+  console.log(signed);
 
   res.set({
     "Access-Control-Allow-Origin": "*"
   });
-   
-  res.send({signed});
+
+  res.send({ signed });
 });
 
 const listener = app.listen(process.env.PORT, () => {
