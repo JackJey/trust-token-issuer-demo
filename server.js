@@ -4,8 +4,8 @@ const util = require("util");
 const exec = util.promisify(childProcess.exec);
 const express = require("express");
 const cbor = require("cbor");
-const sh = require("structured-headers");
-const ed25519 = require("ed25519");
+const sfv = require("structured-field-values");
+const ed25519 = require("noble-ed25519");
 
 const { trust_token } = require("./package.json");
 
@@ -71,52 +71,26 @@ app.post(`/.well-known/trust-token/redemption`, async (req, res) => {
   res.send();
 });
 
-function parseSRR(str) {
-  return sh.parseList(str).map(srr => {
-    const issuer = srr.value;
-    const redemption_record = sh.parseDictionary(
-      srr["parameters"]["redemption-record"].toString()
-    );
-
-    const result = {
-      issuer: srr.value,
-      record: {
-        body: cbor.decodeAllSync(redemption_record.body.value).pop(),
-        body_raw: redemption_record.body.value,
-        signature: redemption_record.signature.value
-      }
-    };
-
-    return result;
-  });
-}
-
 app.post(`/.well-known/trust-token/send-srr`, async (req, res) => {
   console.log(req.path);
-  const sec_signed_redemption_record =
-    req.headers["sec-signed-redemption-record"];
+  const srr = sfv.parseList(req.headers["sec-signed-redemption-record"]);
+  const redemption_record = sfv.parseDict(
+    Buffer.from(srr[0]["params"]["redemption-record"]).toString()
+  );
+  const { body, signature } = redemption_record;
+  const public_key = Buffer.from(
+    fs.readFileSync("./keys/srr_pub_key.txt").toString(),
+    "base64"
+  );
+  const signed = await ed25519.verify(signature.value, body.value, public_key);
+
+  console.log(signed);
+
   res.set({
     "Access-Control-Allow-Origin": "*"
   });
 
-  const signed_redemption_records = parseSRR(sec_signed_redemption_record);
-  const { ISSUER } = trust_token;
-  const srr = signed_redemption_records
-    .filter(({ issuer }) => issuer == ISSUER)
-    .pop();
-
-  console.log(srr);
-
-  // verify signature and make sure body doen't altered
-  const signature = srr.record.signature;
-  const keystr = fs.readFileSync("./keys/srr_pub_key.txt").toString();
-  const public_key = Buffer.from(keystr, "base64");
-  const message = srr.record.body_raw;
-  console.log(ed25519.Verify(message, signature, public_key));
-
-   
-  
-  res.send(srr);
+  res.send({ signed });
 });
 
 const listener = app.listen(process.env.PORT, () => {
