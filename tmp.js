@@ -104,11 +104,11 @@ async function main() {
   // })
 
   const canonical_request_data = cbor.encode(new Map([
+     ["sec-time",                                 headers["sec-time"],                                ],
+     ["public-key",                               client_public_key,                                  ],
      ["destination",                              "trust-token-issuer.glitch.me",                     ],
      ["sec-signed-redemption-record",             headers["sec-signed-redemption-record"],            ],
-     ["sec-time",                                 headers["sec-time"],                                ],
      ["sec-trust-tokens-additional-signing-data", headers["sec-trust-tokens-additional-signing-data"],],
-     ["pk",                                       client_public_key,                                  ],
   ]))
 
   const prefix       = Buffer.from("Trust Token v0")
