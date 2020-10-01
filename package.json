@@ -13,9 +13,10 @@
   },
   "trust_token": {
     "ISSUER": "https://trust-token-issuer.glitch.me",
+    "id": 1,
     "protocol_version": "TrustTokenV1",
     "batchsize": 3,
-    "expiry": "1622574000000000"
+    "expiry": "1632970602000000"
   },
   "engines": {
     "node": "12.x"
