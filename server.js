@@ -126,7 +126,7 @@ app.post(`/.well-known/trust-token/send-srr`, async (req, res) => {
     new Map([
       ["sec-time", headers["sec-time"]],
       ["public-key", client_public_key],
-      ["destination", "trust-token-issuer.glitch.me"],
+      ["destination", "trust-token-issuer-demo.glitch.me"],
       ["sec-signed-redemption-record", headers["sec-signed-redemption-record"]],
       [
         "sec-trust-tokens-additional-signing-data",

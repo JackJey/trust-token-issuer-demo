@@ -12,7 +12,7 @@
     "noble-ed25519": "^1.0.1"
   },
   "trust_token": {
-    "ISSUER": "https://trust-token-issuer.glitch.me",
+    "ISSUER": "https://trust-token-issuer-demo.glitch.me",
     "id": 1,
     "protocol_version": "TrustTokenV1",
     "batchsize": 3,

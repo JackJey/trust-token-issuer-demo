@@ -10,23 +10,6 @@ function base64decode(str) {
 document.on("DOMContentLoaded", async e => {
   const ISSUER = location.origin;
 
-  const COMMITMENT = await (await fetch(
-    "/.well-known/trust-token/key-commitment"
-  )).json();
-    
-
-  // display chrome flag with key-commitment
-  const CMD = `/Applications/Google\\ Chrome\\ Canary.app/Contents/MacOS/Google\\ Chrome\\ Canary \\
-  --additional-trust-token-key-commitments='{"${ISSUER}": ${JSON.stringify(COMMITMENT)}}' \\
-  --auto-open-devtools-for-tabs \\
-  --v=1 \\
-  ${location.href} \\
-  1> /dev/null \\
-  2> /dev/null
-  `;
-
-  $("#flag").textContent = CMD;
-  
   $("#yes").on("click", async () => {
     $("#issuing").style.visibility = "visible";
 
