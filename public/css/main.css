@@ -35,17 +35,18 @@ details {
   min-width: 30%;
 }
 
-button#yes {
-  background-color: #eee;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-  color: #444;
+form {
+  color: #333;
+}
+fieldset {
+  border: solid 1px #ccc;
+  border-radius: 4px;
+  padding: 0.8em 2em;
+}
+input[type="checkbox"] {
+  margin-right: 0.4em;
+  vertical-align: top;
   cursor: pointer;
-  display: block;
-
-  font-size: 2rem;
-  width: 6rem;
-  height: 3rem;
 }
 
 section > ul {
