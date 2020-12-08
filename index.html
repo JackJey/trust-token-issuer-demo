@@ -5,9 +5,13 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="shortcut icon"
+      href="https://cdn.glitch.com/133fbe86-518f-4a5c-8857-0810a62fb7ae%2Ffavicon.png?v=1607442443490"
+    />
     <meta
       http-equiv="origin-trial"
-      content="AqDXN6kEo8ii9PosSL5SsG3Mdp1AsEE9htYldRO5eZvebl6UbtB++ZuqDW5p298RwQDsCG4EL4ZqfqJIa88sHQQAAAB5eyJvcmlnaW4iOiJodHRwczovL3RydXN0LXRva2VuLWlzc3Vlci1kZW1vLmdsaXRjaC5tZTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MDc0MTkyMjAsImlzU3ViZG9tYWluIjp0cnVlfQ=="
+      content="Ask/26SxYuyGkwr/zUF8uBOmLISKOC4SDbtni0yYFXroxVcBbCvI9uF3OCeRxHs9DtO6A7vk6HidsM5rKrv9mAAAAABmeyJvcmlnaW4iOiJodHRwczovL3RydXN0LXRva2VuLWlzc3Vlci1kZW1vLmdsaXRjaC5tZTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTEwNzE5MzR9"
     />
     <link rel="stylesheet" href="public/css/main.css" />
     <script
@@ -19,10 +23,29 @@
   <body>
     <main>
       <h1>Trust Token Issuer demo</h1>
-
+      <style>
+        form {
+          color: #333;
+        }
+        fieldset {
+          border: solid 1px #ccc;
+          border-radius: 4px;
+          padding: 0.8em 2em;
+        }
+        input[type="checkbox"] {
+          margin-right: 0.4em;
+          vertical-align: top;
+          cursor: pointer;
+        }
+      </style>
       <section>
-        <h2>Are You a Human ?</h2>
-        <button id="yes">Yes</button>
+        <form>
+          <fieldset>
+            <legend>Are You a Human ?</legend>
+            <input type="checkbox" id="yes" name="human" />
+            <label for="yes">Yes I'm a Human</label>
+          </fieldset>
+        </form>
         <ul>
           <li id="issuing">📝 issueing token ...</li>
           <li id="issued">🎉 successfuly issued!</li>
@@ -47,14 +70,12 @@
         </p>
         <p>
           <strong>Key Commitment is</strong>
-          <a
-            href="/.well-known/trust-token/key-commitment"
-            >Here</a
-          >
+          <a href="/.well-known/trust-token/key-commitment">Here</a>
         </p>
         <p>
           View code:
-          <a href="https://glitch.com/edit/#!/trust-token-issuer-demo">Glitch</a>,
+          <a href="https://glitch.com/edit/#!/trust-token-issuer-demo">Glitch</a
+          >,
           <a href="https://github.com/JackJey/trust-token-issuer-demo">GitHub</a
           >.
         </p>
