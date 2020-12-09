@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Trust Token demo</title>
+    <title>Trust Token DEMO</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,7 +22,7 @@
   </head>
   <body>
     <main>
-      <h1>Trust Token Issuer demo</h1>
+      <h1>Trust Token Issuer DEMO</h1>
 
       <section>
         <form>
@@ -37,78 +37,17 @@
           <li id="issued">🎉 successfuly issued!</li>
           <li id="back">🔙 back to redeemer</li>
         </ul>
+        <button id="refresh">
+          clear token
+        </button>
       </section>
-
-      <hr />
-      <button id="refresh">
-        refresh
-      </button>
-      <details>
-        <summary>Details</summary>
-
-        <p>
-          This site demonstrates Trust Token
-          <a href="https://github.com/WICG/trust-token-api#trust-token-issuance"
-            >issuance</a
-          >, using
-          <a href="https://boringssl.googlesource.com/boringssl/">BoringSSL</a>
-          to create an issuance service.
-        </p>
-        <p>
-          <strong>Key Commitment is</strong>
-          <a href="/.well-known/trust-token/key-commitment">Here</a>
-        </p>
-        <p>
-          View code:
-          <a href="https://glitch.com/edit/#!/trust-token-issuer-demo">Glitch</a
-          >,
-          <a href="https://github.com/JackJey/trust-token-issuer-demo">GitHub</a
-          >.
-        </p>
-        <h3>Find out more</h3>
-        <ul>
-          <li>
-            <a href="http://www.chromium.org/updates/trust-token"
-              >Trust Token API: The Chromium Projects</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://groups.google.com/a/chromium.org/g/blink-dev/c/UIvia1WwIhk"
-              >Intent to Experiment: Trust Token API</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://bugs.chromium.org/p/chromium/issues/detail?id=1014199"
-              >Chromium tracking bug</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://github.com/WICG/trust-token-api#trust-token-api-explainer"
-              >API explainer</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://github.com/WICG/trust-token-api/blob/master/ISSUER_PROTOCOL.md"
-              >TrustTokenV1 Issuer Protocol</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://source.chromium.org/chromium/chromium/src/+/master:third_party/boringssl/src/crypto/trust_token/trust_token_test.cc"
-              >boringssl/src/crypto/trust_token/trust_token_test.cc</a
-            >
-          </li>
-          <li>
-            <a href="https://web.dev/trust-tokens/"
-              >Getting started with Trust Tokens
-            </a>
-          </li>
-        </ul>
-      </details>
     </main>
+    <footer>
+      <p>
+        Key Commitment is
+        <a href="/.well-known/trust-token/key-commitment">Here</a>. see the
+        <a href="https://trust-token-demo.glitch.me">Doc</a> for more details.
+      </p>
+    </footer>
   </body>
 </html>
