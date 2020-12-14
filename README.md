@@ -1,8 +1,8 @@
 # Trust Token DEMO
 
-DEMO of Trust Token API based on boringssl.
+DEMO of Trust Token API ISSUER based on boringssl.
 
-https://trust-token-demo.glitch.me/
+https://trust-token-issuer-demo.glitch.me/
 
 ## How to use
 
