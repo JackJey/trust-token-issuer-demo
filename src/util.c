@@ -1,3 +1,5 @@
+// Copyright 2020 Google LLC. SPDX-License-Identifier: Apache-2.0
+
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>

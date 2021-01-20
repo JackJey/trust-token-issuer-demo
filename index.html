@@ -1,53 +1,57 @@
+<!-- Copyright 2020 Google LLC. SPDX-License-Identifier: Apache-2.0 -->
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Trust Token DEMO</title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="shortcut icon"
-      href="https://cdn.glitch.com/133fbe86-518f-4a5c-8857-0810a62fb7ae%2Ffavicon.png?v=1607442443490"
-    />
-    <meta
-      http-equiv="origin-trial"
-      content="Ask/26SxYuyGkwr/zUF8uBOmLISKOC4SDbtni0yYFXroxVcBbCvI9uF3OCeRxHs9DtO6A7vk6HidsM5rKrv9mAAAAABmeyJvcmlnaW4iOiJodHRwczovL3RydXN0LXRva2VuLWlzc3Vlci1kZW1vLmdsaXRjaC5tZTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTEwNzE5MzR9"
-    />
-    <link rel="stylesheet" href="public/css/main.css" />
-    <script
-      src="https://cdn.jsdelivr.net/npm/cbor-js-unofficial@0.1.0-a4/cbor.min.js"
-      defer
-    ></script>
-    <script src="public/js/issuer.js" defer></script>
-  </head>
-  <body>
-    <main>
-      <h1>Trust Token Issuer DEMO</h1>
 
+  <head>
+
+    <title>Trust Token issuer demo</title>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="origin-trial" content="AnHrEzcLxSxkLYNEjq6J4C9y1O41HIj2RpaaHidhd06WdVcTNx3BvJ79ujgz9vsxud0+qV/9gIu1R//T8JrvdQAAAABmeyJvcmlnaW4iOiJodHRwczovL3RydXN0LXRva2VuLWlzc3Vlci1kZW1vLmdsaXRjaC5tZTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTQ3MzQxNzN9">
+    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate icon" href="/favicon.ico">
+
+    <link rel="stylesheet" href="public/css/main.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/cbor-js-unofficial@0.1.0-a4/cbor.min.js" defer></script>
+    <script src="public/js/issuer.js" defer></script>
+  
+  </head>
+
+  <body>
+
+    <main>
+      <h1>Trust Token issuer demo</h1>
       <section>
         <form>
           <fieldset>
-            <legend>Are You a Human ?</legend>
-            <input type="checkbox" id="yes" name="human" />
-            <label for="yes">Yes I'm a Human</label>
+            <legend>Are you a human?</legend>
+            <input type="checkbox" id="yes" name="human">
+            <label for="yes">Yes! I'm a human</label>
           </fieldset>
         </form>
         <ul>
-          <li id="issuing">📝 issueing token ...</li>
-          <li id="issued">🎉 successfuly issued!</li>
-          <li id="back">🔙 back to redeemer</li>
+          <li id="issuing">📝 Issuing token...</li>
+          <li id="issued">🎉 Successfuly issued!</li>
+          <li id="back">🔙 Now go back to the redemption demo.</li>
         </ul>
-        <button id="refresh">
-          clear token
-        </button>
+        <button id="refresh">Clear token</button>
       </section>
     </main>
+
     <footer>
-      <p>
-        Key Commitment is
-        <a href="/.well-known/trust-token/key-commitment">Here</a>. see the
-        <a href="https://trust-token-demo.glitch.me">Doc</a> for more details.
-      </p>
+      <p><a href="/.well-known/trust-token/key-commitment">View key commitment data</a></p> 
+      <p><a href="https://trust-token-demo.glitch.me">More information about this demo</a></p>
+      <p><b>Please note:</b> These demos do not provide code suitable for production use. The&nbsp;Trust&nbsp;Tokens 
+        API is still experimental, and is undergoing an <a href="https://web.dev/origin-trials">origin trial</a> 
+        in Chrome. The API and the demos may change without notice at any time.</p>
+      <p>This is not a Google product.</p>
     </footer>
+
   </body>
+
 </html>

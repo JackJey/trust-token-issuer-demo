@@ -1,3 +1,5 @@
+// Copyright 2020 Google LLC. SPDX-License-Identifier: Apache-2.0
+
 const fs = require("fs");
 const crypto = require("crypto");
 const childProcess = require("child_process");

@@ -1,3 +1,5 @@
+/* Copyright 2020 Google LLC. SPDX-License-Identifier: Apache-2.0 */
+
 "use strict";
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
@@ -45,7 +47,7 @@ document.on("DOMContentLoaded", async e => {
 
   $("#refresh").on("click", async () => {
     try {
-      while (true) {
+      while (await document.hasTrustToken(ISSUER)) {
         // redemption request
         await fetch(`${ISSUER}/.well-known/trust-token/redemption`, {
           method: "POST",
@@ -78,7 +80,7 @@ document.on("DOMContentLoaded", async e => {
       }
     } catch (err) {
       console.error(err);
-      console.log("token cleared");
     }
+    console.log("token cleared");
   });
 });
