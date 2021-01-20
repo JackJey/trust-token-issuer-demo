@@ -16,6 +16,10 @@ example: src/example.c src/config.h
 	$(CC) src/example.c -o ./bin/example src/util.o $(CFLAGS)
 	./bin/example
 
+example.v2: src/example.v2.c src/config.h
+	$(CC) src/example.v2.c -o ./bin/example src/util.o $(CFLAGS)
+	./bin/example
+
 .PHONY: generate_key, clean, test
 generate_key:
 	$(MAIN) --key-generate
