@@ -1,3 +1,5 @@
+// Copyright 2020 Google LLC. SPDX-License-Identifier: Apache-2.0
+
 #include <stdio.h>
 #include <openssl/curve25519.h>
 #include <openssl/trust_token.h>

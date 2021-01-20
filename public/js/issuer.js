@@ -1,3 +1,5 @@
+/* Copyright 2020 Google LLC. SPDX-License-Identifier: Apache-2.0 */
+
 "use strict";
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
@@ -44,34 +46,41 @@ document.on("DOMContentLoaded", async e => {
   });
 
   $("#refresh").on("click", async () => {
-    // redemption request
-    await fetch(`${ISSUER}/.well-known/trust-token/redemption`, {
-      method: "POST",
-      trustToken: {
-        type: "srr-token-redemption",
-        issuer: ISSUER,
-        refreshPolicy: "refresh"
+    try {
+      while (await document.hasTrustToken(ISSUER)) {
+        // redemption request
+        await fetch(`${ISSUER}/.well-known/trust-token/redemption`, {
+          method: "POST",
+          trustToken: {
+            type: "srr-token-redemption",
+            issuer: ISSUER,
+            refreshPolicy: "refresh"
+          }
+        });
+
+        // send SRR and echo Sec-Signed-Eedemption-Record
+        const res = await fetch(`${ISSUER}/.well-known/trust-token/send-srr`, {
+          headers: new Headers({
+            "Signed-Headers": "sec-signed-redemption-record, sec-time"
+          }),
+
+          method: "POST",
+          trustToken: {
+            type: "send-srr",
+            issuer: ISSUER, // deprecated
+            issuers: [ISSUER],
+            includeTimestampHeader: true,
+            signRequestData: "include",
+            additionalSigningData: "additional_signing_data"
+          }
+        });
+
+        const body = await res.json();
+        console.log(JSON.stringify(body, " ", " "));
       }
-    });
-
-    // send SRR and echo Sec-Signed-Eedemption-Record
-    const res = await fetch(`${ISSUER}/.well-known/trust-token/send-srr`, {
-      headers: new Headers({
-        "Signed-Headers": "sec-signed-redemption-record, sec-time"
-      }),
-
-      method: "POST",
-      trustToken: {
-        type: "send-srr",
-        issuer: ISSUER, // deprecated
-        issuers: [ISSUER],
-        includeTimestampHeader: true,
-        signRequestData: "include",
-        additionalSigningData: "additional_signing_data"
-      }
-    });
-
-    const body = await res.json();
-    console.log(JSON.stringify(body, " ", " "));
+    } catch (err) {
+      console.error(err);
+    }
+    console.log("token cleared");
   });
 });

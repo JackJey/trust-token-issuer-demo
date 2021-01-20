@@ -1,7 +1,4 @@
-:root {
-  --desktop-font-size: 16px;
-  --mobile-font-size: 22px;
-}
+/* Copyright 2020 Google LLC. SPDX-License-Identifier: Apache-2.0 */
 
 body {
   font-family: "Google Sans", sans-serif;
@@ -9,15 +6,22 @@ body {
   width: 90vw;
   height: 100vh;
   padding: 0;
-  margin: 0 auto;
+  margin: 50px auto;
 }
 
 main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: 100%;
+}
+
+footer {
+  border-top: 1px solid #ccc;
+  margin: 0 auto;
+  padding: 20px 0 0 0;
+  text-align: center;
+  width: 50vw;
 }
 
 section {
@@ -35,17 +39,20 @@ details {
   min-width: 30%;
 }
 
-button#yes {
-  background-color: #eee;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-  color: #444;
-  cursor: pointer;
-  display: block;
+form {
+  color: #333;
+}
 
-  font-size: 2rem;
-  width: 6rem;
-  height: 3rem;
+fieldset {
+  border: solid 1px #ccc;
+  border-radius: 4px;
+  padding: 0.8em 2em;
+}
+
+input[type="checkbox"] {
+  margin-right: 0.4em;
+  vertical-align: top;
+  cursor: pointer;
 }
 
 section > ul {
@@ -56,9 +63,18 @@ section > ul > li {
   visibility: hidden;
 }
 
+button {
+  font-size: 1em;
+  background-color: #eee;
+  border-radius: 4px;
+  border: solid 1px #ccc;
+  color: #555;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
 button:hover {
   background-color: #ccc;
-  color: black;
 }
 
 hr {
@@ -67,8 +83,10 @@ hr {
 }
 
 h1 {
+  border-bottom: 1px solid #ccc;
   font-weight: 400;
-  font-size: 1.4rem;
+  font-size: 2rem;
+  padding: 0 0 10px 0;
   text-align: center;
 }
 
@@ -77,7 +95,6 @@ h2 {
   text-align: center;
 }
 
-/** in detail **/
 a {
   color: #3740ff;
 }
@@ -88,10 +105,16 @@ a:hover {
 }
 
 ul {
-  margin: 0;
-  padding-inline-start: 1rem;
+  margin: 3em 0;
+  padding-left: 10rem;
 }
 
 li {
   line-height: 2rem;
+  list-style: none;
 }
+
+label {
+  cursor: pointer;
+}
+
