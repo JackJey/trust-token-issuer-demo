@@ -16,7 +16,7 @@
 
 // V0 VOPRF
 int main(int argc, char **argv) {
-  const TRUST_TOKEN_METHOD *method = TRUST_TOKEN_experiment_v2_voprf();
+  const    TRUST_TOKEN_METHOD *method = TRUST_TOKEN_experiment_v2_voprf();
   uint8_t  priv_key[TRUST_TOKEN_MAX_PRIVATE_KEY_SIZE];
   uint8_t  pub_key[TRUST_TOKEN_MAX_PUBLIC_KEY_SIZE];
   size_t   priv_key_len, pub_key_len;
@@ -75,39 +75,6 @@ int main(int argc, char **argv) {
   // 1:success, 0:error
   if (!TRUST_TOKEN_ISSUER_add_key(issuer, priv_key, priv_key_len)) {
     fprintf(stderr, "failed to add key in TRUST_TOKEN Issuer.\n");
-    exit(0);
-  }
-
-  // ED25519 Public/Private Key
-  uint8_t ed25519_private_key[ED25519_PRIVATE_KEY_LEN];
-  uint8_t ed25519_public_key[ED25519_PUBLIC_KEY_LEN];
-  ED25519_keypair(ed25519_public_key, ed25519_private_key);
-
-  // convert to EVP_PKEY
-  //
-  // Some keys types support a "raw" serialization. Currently the only supported
-  // raw format is Ed25519, where the public key and private key formats are those
-  // specified in RFC 8032. Note the RFC 8032 private key format is the 32-byte
-  // prefix of |ED25519_sign|'s 64-byte private key.
-  // 1:success, 0:error
-  EVP_PKEY* ed25519_priv = EVP_PKEY_new_raw_private_key(EVP_PKEY_ED25519, NULL, ed25519_private_key, 32); // TODO: 64 ??
-  EVP_PKEY* ed25519_pub  = EVP_PKEY_new_raw_public_key(EVP_PKEY_ED25519,  NULL, ed25519_public_key,  32);
-  if (!ed25519_priv || !ed25519_pub) {
-    fprintf(stderr, "failed to generate EVP_PKEY.\n");
-    exit(0);
-  }
-
-  // add Sign Key for SRR to issuer
-  // 1:success, 0:error
-  if (!TRUST_TOKEN_ISSUER_set_srr_key(issuer, ed25519_priv)) {
-    fprintf(stderr, "failed to set SRR key to TRUST_TOKEN Issuer.\n");
-    exit(0);
-  }
-
-  // add Validation Key for SRR to client
-  // 1:success, 0:error
-  if (!TRUST_TOKEN_CLIENT_set_srr_key(client, ed25519_pub)) {
-    fprintf(stderr, "failed to set SRR key to TRUST_TOKEN Client.\n");
     exit(0);
   }
 
@@ -230,54 +197,4 @@ int main(int argc, char **argv) {
   fprintf(stderr, "ISSUER(redeem) out_private:      %d\n", out_private);
   fprintf(stderr, "ISSUER(redeem) rtoken:           %p\n", rtoken);
   fprintf(stderr, "ISSUER(redeem) client_data(%zu): %s\n", client_data_len, client_data);
-
-  // // 8. client redumption finish
-  // // verify SRR in |response| from issuer
-  // // return |out_srr| |out_sig| if valid
-  // // 1:success, 0:error
-  // uint8_t *srr = NULL, *sig = NULL;
-  // size_t srr_len, sig_len;
-  // if (!TRUST_TOKEN_CLIENT_finish_redemption(client,
-  //                                           &srr, &srr_len,
-  //                                           &sig, &sig_len,
-  //                                           redeem_resp, redeem_resp_len)) {
-  //   fprintf(stderr, "failed to finish redemption in TRUST_TOKEN Client.\n");
-  //   exit(0);
-  // }
-  // fprintf(stderr, "CLIENT(finish_redemption) srr(%zu): %p\n", srr_len, srr);
-  // fprintf(stderr, "CLIENT(finish_redemption) sig(%zu): %p\n", sig_len, sig);
-
-  // fprintf(stderr, "SRR: %s\n", srr);
-  // hexdump(srr, srr_len);
-
-
-
-  // 9. Private Metadata
-  // decode |encrypted_bit| with metadata key |key| & |nonce|
-  // |TRUST_TOKEN_experiment_v1| 's nonce are SRR token-hash field.
-  // |*out_value| is decrypt result (0 / 1)
-  // 1:success, 0:error
-
-  // const uint8_t kTokenHashDSTLabel[] = TOKEN_HASH;
-  // uint8_t token_hash[SHA256_DIGEST_LENGTH];
-  // SHA256_CTX sha_ctx;
-  // SHA256_Init(&sha_ctx);
-  // SHA256_Update(&sha_ctx, kTokenHashDSTLabel, sizeof(kTokenHashDSTLabel));
-  // SHA256_Update(&sha_ctx, token->data, token->len);
-  // SHA256_Final(token_hash, &sha_ctx);
-  // uint8_t decode_private_metadata;
-  // if (!TRUST_TOKEN_decode_private_metadata(method,
-  //                                          &decode_private_metadata,
-  //                                          metadata_key, sizeof(metadata_key),
-  //                                          token_hash,   sizeof(token_hash),
-  //                                          srr[27])) {
-  //   fprintf(stderr, "failed to decode private metadata in TRUST_TOKEN.\n");
-  //   exit(0);
-  // }
-  // fprintf(stderr, "decode_private_metadata: %hhuu\n", decode_private_metadata);
-
-  // TRUST_TOKEN_CLIENT_free(client);
-  // TRUST_TOKEN_ISSUER_free(issuer);
-  // OPENSSL_free(request);
-  // OPENSSL_free(response);
 }
