@@ -23,10 +23,6 @@ app.get("/", (req, res) => {
 app.get("/.well-known/trust-token/key-commitment", (req, res) => {
   console.log(req.path);
   const { ISSUER, protocol_version, batchsize, expiry, id } = trust_token;
-  const srrkey = fs
-    .readFileSync("./keys/srr_pub_key.txt")
-    .toString()
-    .trim();
   const Y = fs
     .readFileSync("./keys/pub_key.txt")
     .toString()
@@ -36,7 +32,6 @@ app.get("/.well-known/trust-token/key-commitment", (req, res) => {
     id,
     protocol_version,
     batchsize,
-    srrkey,
     "1": { Y, expiry }
   };
 
@@ -44,7 +39,7 @@ app.get("/.well-known/trust-token/key-commitment", (req, res) => {
     "Access-Control-Allow-Origin": "*",
     "Content-Type": "application/json; charset=utf-8"
   });
-  
+
   res.send(JSON.stringify(key_commitment, "", " "));
 });
 

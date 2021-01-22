@@ -14,7 +14,7 @@
 #include "util.h"
 
 
-// V0 VOPRF
+// V2 VOPRF
 int main(int argc, char **argv) {
   const    TRUST_TOKEN_METHOD *method = TRUST_TOKEN_experiment_v2_voprf();
   uint8_t  priv_key[TRUST_TOKEN_MAX_PRIVATE_KEY_SIZE];
