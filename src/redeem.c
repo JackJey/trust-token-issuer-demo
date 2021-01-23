@@ -85,7 +85,7 @@ int redeem(uint8_t *request_base64, size_t request_base64_len, uint8_t **respons
   fprintf(stderr, "ISSUER(redeem) out_public:       %d\n", out_public);
   fprintf(stderr, "ISSUER(redeem) out_private:      %d\n", out_private);
   fprintf(stderr, "ISSUER(redeem) rtoken:           %p\n", rtoken);
-  //fprintf(stderr, "ISSUER(redeem) client_data(%zu): %s\n", client_data_len, client_data);
+  fprintf(stderr, "ISSUER(redeem) client_data(%zu): %s\n", client_data_len, client_data);
 
   uint8_t response[50];
   size_t response_len = sprintf(response, "{\"pubic_metadata\": %d, \"private_metadata\": %d}", out_public, out_private);
