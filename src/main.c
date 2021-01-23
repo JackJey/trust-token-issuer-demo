@@ -78,11 +78,11 @@ int main(int argc, char *argv[]) {
 
     // save to file
     if (!write_file("./keys/priv_key.txt", keys.priv_key_base64, keys.priv_key_base64_len)) {
-      fprintf(stderr, "failed to write key");
+      fprintf(stderr, "failed to write key\n");
       return EXIT_FAILURE;
     }
     if (!write_file("./keys/pub_key.txt", keys.pub_key_base64, keys.pub_key_base64_len)) {
-      fprintf(stderr, "failed to write key");
+      fprintf(stderr, "failed to write key\n");
       return EXIT_FAILURE;
     }
 

@@ -57,28 +57,39 @@ int redeem(uint8_t *request_base64, size_t request_base64_len, uint8_t **respons
 
   /// redeem
 
-  // 7. issuer redeem
-  // validate redeemed token
-  // if token is valid , SSR generated with |lifetime| sec
-  // signed requested data & token are |out|
+  // 7. issuer redeem **raw**
+  // redeem & verify |request| token
+  // if token is valid, public/private metadata extracted
+  // to |public_metadata| & |private_metadata|
+  // |TRUST_TOKEN| is |out_token|
+  // |out_client_data| is client data
+  // |*out_redemption_time| is redemption time
   // 1:success, 0:error
-  uint8_t  *response = NULL;
-  size_t   response_len;
+  uint32_t out_public;
+  uint8_t out_private;
   TRUST_TOKEN *rtoken;
-  uint8_t  *client_data;
-  size_t   client_data_len;
-  uint64_t redemption_time;
-  int lifetime = ISSUER_LIFETIME;
-  if (!TRUST_TOKEN_ISSUER_redeem(issuer,
-                                 &response, &response_len,
-                                 &rtoken,
-                                 &client_data, &client_data_len,
-                                 &redemption_time,
-                                 request, request_len,
-                                 lifetime)) {
+  uint8_t *client_data;
+  size_t client_data_len;
+
+  if (!TRUST_TOKEN_ISSUER_redeem_raw(issuer,
+                                     &out_public,
+                                     &out_private,
+                                     &rtoken,
+                                     &client_data,
+                                     &client_data_len,
+                                     request,
+                                     request_len)) {
     fprintf(stderr, "failed to redeem in TRUST_TOKEN Issuer.\n");
     return 0;
   }
+  fprintf(stderr, "ISSUER(redeem) out_public:       %d\n", out_public);
+  fprintf(stderr, "ISSUER(redeem) out_private:      %d\n", out_private);
+  fprintf(stderr, "ISSUER(redeem) rtoken:           %p\n", rtoken);
+  fprintf(stderr, "ISSUER(redeem) client_data(%zu): %s\n", client_data_len, client_data);
+
+  uint8_t response[50];
+  size_t response_len = sprintf(response, "{\"pubic_metadata\": %d, \"private_metadata\": %d}", out_public, out_private);
+  fprintf(stderr, "ISSUER(output[%ld]) %s\n", response_len, response);
 
   // encode response into Base64
   if (!base64_encode(response, response_len, response_base64, response_base64_len)) {

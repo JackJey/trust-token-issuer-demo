@@ -17,6 +17,7 @@ document.on("DOMContentLoaded", async e => {
 
     // issuer request
     await fetch(`/.well-known/trust-token/issuance`, {
+      method: "POST",
       trustToken: {
         type: "token-request",
         issuer: ISSUER
@@ -49,6 +50,7 @@ document.on("DOMContentLoaded", async e => {
       while (await document.hasTrustToken(ISSUER)) {
         // redemption request
         await fetch(`${ISSUER}/.well-known/trust-token/redemption`, {
+          method: "POST",
           trustToken: {
             type: "token-redemption",
             issuer: ISSUER,
@@ -56,13 +58,13 @@ document.on("DOMContentLoaded", async e => {
           }
         });
 
-        // send SRR and echo Sec-Signed-Eedemption-Record
+        // send SRR and echo Sec-Eedemption-Record
         const res = await fetch(`${ISSUER}/.well-known/trust-token/send-rr`, {
+          method: "POST",
           headers: new Headers({
-            "Signed-Headers": "sec-signed-redemption-record, sec-time"
+            "Signed-Headers": "sec-redemption-record, sec-time"
           }),
 
-          method: "POST",
           trustToken: {
             type: "send-redemption-record",
             issuers: [ISSUER],

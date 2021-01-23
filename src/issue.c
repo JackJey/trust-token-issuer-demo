@@ -43,7 +43,7 @@ int issue(uint8_t *request_base64, size_t request_base64_len, uint8_t **response
 
   size_t priv_key_base64_len = priv_key_base64_size - 1;
 
-  fprintf(stderr, "priv_key_base64_len: %ld", priv_key_base64_len);
+  fprintf(stderr, "priv_key_base64_len: %ld\n", priv_key_base64_len);
 
   size_t priv_key_len;
   uint8_t* priv_key;
