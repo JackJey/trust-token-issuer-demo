@@ -43,7 +43,7 @@ app.get("/.well-known/trust-token/key-commitment", (req, res) => {
   res.send(JSON.stringify(key_commitment, "", " "));
 });
 
-app.get(`/.well-known/trust-token/issuance`, async (req, res) => {
+app.post(`/.well-known/trust-token/issuance`, async (req, res) => {
   console.log(req.path);
   const sec_trust_token = req.headers["sec-trust-token"];
   console.log({ sec_trust_token });
@@ -56,7 +56,7 @@ app.get(`/.well-known/trust-token/issuance`, async (req, res) => {
   res.send();
 });
 
-app.get(`/.well-known/trust-token/redemption`, async (req, res) => {
+app.post(`/.well-known/trust-token/redemption`, async (req, res) => {
   console.log(req.path);
   console.log(req.headers);
   const sec_trust_token_version = req.headers["sec-trust-token-version"];
