@@ -17,7 +17,6 @@ document.on("DOMContentLoaded", async e => {
 
     // issuer request
     await fetch(`/.well-known/trust-token/issuance`, {
-      method: "POST",
       trustToken: {
         type: "token-request",
         issuer: ISSUER
@@ -50,7 +49,6 @@ document.on("DOMContentLoaded", async e => {
       while (await document.hasTrustToken(ISSUER)) {
         // redemption request
         await fetch(`${ISSUER}/.well-known/trust-token/redemption`, {
-          method: "POST",
           trustToken: {
             type: "token-redemption",
             issuer: ISSUER,
@@ -68,7 +66,7 @@ document.on("DOMContentLoaded", async e => {
           trustToken: {
             type: "send-redemption-record",
             issuers: [ISSUER],
-            refreshPolicy: "refresh"
+            refreshPolicy: "refresh",
             includeTimestampHeader: true,
             signRequestData: "include",
             additionalSigningData: "additional_signing_data"

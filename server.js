@@ -43,9 +43,10 @@ app.get("/.well-known/trust-token/key-commitment", (req, res) => {
   res.send(JSON.stringify(key_commitment, "", " "));
 });
 
-app.post(`/.well-known/trust-token/issuance`, async (req, res) => {
+app.get(`/.well-known/trust-token/issuance`, async (req, res) => {
   console.log(req.path);
   const sec_trust_token = req.headers["sec-trust-token"];
+  console.log({ sec_trust_token });
   const result = await exec(`./bin/main --issue ${sec_trust_token}`);
   const token = result.stdout;
   res.set({
@@ -55,8 +56,13 @@ app.post(`/.well-known/trust-token/issuance`, async (req, res) => {
   res.send();
 });
 
-app.post(`/.well-known/trust-token/redemption`, async (req, res) => {
+app.get(`/.well-known/trust-token/redemption`, async (req, res) => {
   console.log(req.path);
+  console.log(req.headers);
+  const sec_trust_token_version = req.headers["sec-trust-token-version"];
+  if (sec_trust_token_version !== "TrustTokenV2VOPRF") {
+    return res.send(400);
+  }
   const sec_trust_token = req.headers["sec-trust-token"];
   const result = await exec(`./bin/main --redeem ${sec_trust_token}`);
   const token = result.stdout;
@@ -149,6 +155,6 @@ const listener = app.listen(process.env.PORT, () => {
   console.log(`listening on port ${listener.address().port}`);
 });
 
-process.on('unhandledRejection', (err) => {
-  console.error(err)
+process.on("unhandledRejection", err => {
+  console.error(err);
 });
