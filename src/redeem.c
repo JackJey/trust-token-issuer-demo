@@ -72,13 +72,13 @@ int redeem(uint8_t *request_base64, size_t request_base64_len, uint8_t **respons
   size_t client_data_len;
 
   if (!TRUST_TOKEN_ISSUER_redeem_raw(issuer,
-                                 &out_public,
-                                 &out_private,
-                                 &rtoken,
-                                 &client_data,
-                                 &client_data_len,
-                                 request,
-                                 request_len)) {
+                                     &out_public,
+                                     &out_private,
+                                     &rtoken,
+                                     &client_data,
+                                     &client_data_len,
+                                     request,
+                                     request_len)) {
     fprintf(stderr, "failed to redeem in TRUST_TOKEN Issuer.\n");
     return 0;
   }
