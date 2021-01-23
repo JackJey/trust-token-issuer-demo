@@ -58,11 +58,11 @@ document.on("DOMContentLoaded", async e => {
           }
         });
 
-        // send SRR and echo Sec-Signed-Eedemption-Record
+        // send SRR and echo Sec-Eedemption-Record
         const res = await fetch(`${ISSUER}/.well-known/trust-token/send-rr`, {
           method: "POST",
           headers: new Headers({
-            "Signed-Headers": "sec-signed-redemption-record, sec-time"
+            "Signed-Headers": "sec-redemption-record, sec-time"
           }),
 
           trustToken: {

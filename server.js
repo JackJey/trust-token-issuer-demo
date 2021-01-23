@@ -79,7 +79,7 @@ app.post(`/.well-known/trust-token/send-rr`, async (req, res) => {
   const headers = req.headers;
   console.log(headers)
 
-  // sec-signed-redemption-record
+  // sec-redemption-record
   // [(<issuer 1>, {"redemption-record": <SRR 1>}),
   //  (<issuer N>, {"redemption-record": <SRR N>})],
   const srr = sfv.parseList(headers["sec-redemption-record"]);
@@ -131,7 +131,7 @@ app.post(`/.well-known/trust-token/send-rr`, async (req, res) => {
       ["sec-time", headers["sec-time"]],
       ["public-key", client_public_key],
       ["destination", "trust-token-issuer-demo.glitch.me"],
-      ["sec-signed-redemption-record", headers["sec-signed-redemption-record"]],
+      ["sec-redemption-record", headers["sec-redemption-record"]],
       [
         "sec-trust-tokens-additional-signing-data",
         headers["sec-trust-tokens-additional-signing-data"]
