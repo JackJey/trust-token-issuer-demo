@@ -12,8 +12,10 @@
  * error: 0
  */
 int issue(uint8_t *request_base64, size_t request_base64_len, uint8_t **response_base64, size_t *response_base64_len) {
+  const TRUST_TOKEN_METHOD *method = TRUST_TOKEN_experiment_v2_voprf();
+
   // 1. Sec-Trust-Token
-  // fprintf(stderr, "\e[0;31mISSUE REQUEST(%lu)\e[0m: %s\n\n", request_base64_len, request_base64);
+  fprintf(stderr, "\e[0;31mISSUE REQUEST(%lu)\e[0m: %s\n\n", request_base64_len, request_base64);
 
   // 2. Base64 decode
   size_t request_len;
@@ -24,7 +26,6 @@ int issue(uint8_t *request_base64, size_t request_base64_len, uint8_t **response
   }
 
   // 3. Trust Token Issuer
-  const TRUST_TOKEN_METHOD *method = TRUST_TOKEN_experiment_v1();
   uint16_t issuer_max_batchsize = ISSUER_MAX_BATCHSIZE;
   TRUST_TOKEN_ISSUER* issuer = TRUST_TOKEN_ISSUER_new(method, issuer_max_batchsize);
   if (!issuer) {
@@ -54,38 +55,6 @@ int issue(uint8_t *request_base64, size_t request_base64_len, uint8_t **response
   // 5. Add Private Key to Issuer
   if (!TRUST_TOKEN_ISSUER_add_key(issuer, priv_key, priv_key_len)) {
     fprintf(stderr, "failed to add key in TRUST_TOKEN Issuer.\n");
-    return 0;
-  }
-
-  // 6. ED25519 Private Key
-  size_t srr_priv_key_base64_size;
-  uint8_t *srr_priv_key_base64;
-  if (!read_file(SRR_PRIV_KEY_PATH, &srr_priv_key_base64, &srr_priv_key_base64_size)) {
-    fprintf(stderr, "failed to read file\n");
-    return 0;
-  };
-
-  size_t srr_priv_key_base64_len = srr_priv_key_base64_size - 1;
-
-  size_t srr_priv_key_len;
-  uint8_t* srr_priv_key;
-  if (!base64_decode(srr_priv_key_base64, srr_priv_key_base64_len, &srr_priv_key, &srr_priv_key_len)) {
-    fprintf(stderr, "failed to decode base64\n");
-    return 0;
-  }
-
-  // 7. Private Key to |EVP_PKEY|
-  // 1:success, 0:error
-  EVP_PKEY* ed25519_priv = EVP_PKEY_new_raw_private_key(EVP_PKEY_ED25519, NULL, srr_priv_key, 32); // TODO: 64 ??
-  if (!ed25519_priv) {
-    fprintf(stderr, "failed to generate EVP_PKEY.\n");
-    return 0;
-  }
-
-  // 8. Set Private Key to Issuer
-  // 1:success, 0:error
-  if (!TRUST_TOKEN_ISSUER_set_srr_key(issuer, ed25519_priv)) {
-    fprintf(stderr, "failed to set SRR key to TRUST_TOKEN Issuer.\n");
     return 0;
   }
 
@@ -126,7 +95,7 @@ int issue(uint8_t *request_base64, size_t request_base64_len, uint8_t **response
     return 0;
   }
 
-  // fprintf(stderr, "\e[0;31mISSUE RESPONSE(%ld)\e[0m: %s\n\n", *response_base64_len, *response_base64);
+  fprintf(stderr, "\e[0;31mISSUE RESPONSE(%ld)\e[0m: %s\n\n", *response_base64_len, *response_base64);
 
   return 1;
 }

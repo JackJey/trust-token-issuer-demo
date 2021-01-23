@@ -17,7 +17,6 @@ document.on("DOMContentLoaded", async e => {
 
     // issuer request
     await fetch(`/.well-known/trust-token/issuance`, {
-      method: "POST",
       trustToken: {
         type: "token-request",
         issuer: ISSUER
@@ -50,25 +49,24 @@ document.on("DOMContentLoaded", async e => {
       while (await document.hasTrustToken(ISSUER)) {
         // redemption request
         await fetch(`${ISSUER}/.well-known/trust-token/redemption`, {
-          method: "POST",
           trustToken: {
-            type: "srr-token-redemption",
+            type: "token-redemption",
             issuer: ISSUER,
             refreshPolicy: "refresh"
           }
         });
 
         // send SRR and echo Sec-Signed-Eedemption-Record
-        const res = await fetch(`${ISSUER}/.well-known/trust-token/send-srr`, {
+        const res = await fetch(`${ISSUER}/.well-known/trust-token/send-rr`, {
           headers: new Headers({
             "Signed-Headers": "sec-signed-redemption-record, sec-time"
           }),
 
           method: "POST",
           trustToken: {
-            type: "send-srr",
-            issuer: ISSUER, // deprecated
+            type: "send-redemption-record",
             issuers: [ISSUER],
+            refreshPolicy: "refresh",
             includeTimestampHeader: true,
             signRequestData: "include",
             additionalSigningData: "additional_signing_data"

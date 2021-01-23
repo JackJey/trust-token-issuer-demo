@@ -70,14 +70,10 @@ int main(int argc, char *argv[]) {
     fprintf(stdout,
         "{\n"
         "  \"priv_key_base64\": \"%s\",\n"
-        "  \"pub_key_base64\": \"%s\",\n"
-        "  \"srr_priv_key_base64\": \"%s\",\n"
-        "  \"srr_pub_key_base64\": \"%s\"\n"
+        "  \"pub_key_base64\": \"%s\"\n"
         "}\n",
         keys.priv_key_base64,
-        keys.pub_key_base64,
-        keys.srr_priv_key_base64,
-        keys.srr_pub_key_base64
+        keys.pub_key_base64
         );
 
     // save to file
@@ -89,19 +85,9 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "failed to write key");
       return EXIT_FAILURE;
     }
-    if (!write_file("./keys/srr_priv_key.txt", keys.srr_priv_key_base64, keys.srr_priv_key_base64_len)) {
-      fprintf(stderr, "failed to write key");
-      return EXIT_FAILURE;
-    }
-    if (!write_file("./keys/srr_pub_key.txt", keys.srr_pub_key_base64, keys.srr_pub_key_base64_len)) {
-      fprintf(stderr, "failed to write key");
-      return EXIT_FAILURE;
-    }
 
     free(keys.pub_key_base64);
     free(keys.priv_key_base64);
-    free(keys.srr_pub_key_base64);
-    free(keys.srr_priv_key_base64);
     return EXIT_SUCCESS;
   }
 
