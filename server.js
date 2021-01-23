@@ -77,53 +77,59 @@ app.post(`/.well-known/trust-token/send-rr`, async (req, res) => {
   console.log(req.path);
 
   const headers = req.headers;
-  console.log(headers)
+  console.log(headers);
 
   // sec-redemption-record
   // [(<issuer 1>, {"redemption-record": <SRR 1>}),
   //  (<issuer N>, {"redemption-record": <SRR N>})],
-  const srr = sfv.parseList(headers["sec-redemption-record"]);
-  const redemption_record = sfv.parseDict(
-    Buffer.from(srr[0]["params"]["redemption-record"]).toString()
-  );
+  const rr = sfv.parseList(headers["sec-redemption-record"]);
+  const { value, params } = rr[0];
+  const redemption_record = Buffer.from(params["redemption-record"]).toString();
+  console.log(redemption_record);
 
-  const { body, signature } = redemption_record;
+  //   const { body, signature } = redemption_record;
 
-  // verify signature
-  const srr_public_key = Buffer.from(
-    fs.readFileSync("./keys/srr_pub_key.txt").toString(),
-    "base64"
-  );
-  const srr_verify = await ed25519.verify(
-    signature.value,
-    body.value,
-    srr_public_key
-  );
-  console.log({ srr_verify });
+  //   // verify signature
+  //   const srr_public_key = Buffer.from(
+  //     fs.readFileSync("./keys/srr_pub_key.txt").toString(),
+  //     "base64"
+  //   );
+  //   const srr_verify = await ed25519.verify(
+  //     signature.value,
+  //     body.value,
+  //     srr_public_key
+  //   );
+  //   console.log({ srr_verify });
 
-  // parse SRR
-  const srr_body = cbor.decodeAllSync(Buffer.from(body.value))[0];
-  const metadata = srr_body["metadata"];
-  const token_hash = srr_body["token-hash"];
-  const client_data = srr_body["client-data"];
-  const key_hash = client_data["key-hash"];
-  const redeeming_origin = client_data["redeeming_origin"];
-  const redeeming_timestamp = client_data["redeeming_timestamp"];
-  const expiry_timestamp = srr_body["expiry-timestamp"];
+  //   // parse SRR
+  //   const srr_body = cbor.decodeAllSync(Buffer.from(body.value))[0];
+  //   const metadata = srr_body["metadata"];
+  //   const token_hash = srr_body["token-hash"];
+  //   const client_data = srr_body["client-data"];
+  //   const key_hash = client_data["key-hash"];
+  //   const redeeming_origin = client_data["redeeming_origin"];
+  //   const redeeming_timestamp = client_data["redeeming_timestamp"];
+  //   const expiry_timestamp = srr_body["expiry-timestamp"];
 
   // verify client_public_key
   const sec_signature = sfv.parseDict(headers["sec-signature"]);
-  const client_public_key =
-    sec_signature.signatures.value[0].params["public-key"];
-  const sig = sec_signature.signatures.value[0].params["sig"];
+  console.log({ sec_signature });
 
+  const signatures = sec_signature.signatures.value[0];
+  const client_public_key = signatures.params["public-key"];
+  console.log({ client_public_key });
+  const sig = signatures.params["sig"];
+  console.log({ sig });
+
+  // TODO: debug from here
   const client_public_key_hash = crypto
     .createHash("sha256")
     .update(client_public_key)
     .digest();
-  const public_key_verify =
-    client_public_key_hash.toString() === key_hash.toString();
-  console.log({ public_key_verify });
+  console.log(client_public_key_hash);
+  // const public_key_verify =
+  //   client_public_key_hash.toString() === key_hash.toString();
+  // console.log({ public_key_verify });
 
   // verify sec-signature
   const canonical_request_data = cbor.encode(
