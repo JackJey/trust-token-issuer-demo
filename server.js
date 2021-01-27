@@ -85,31 +85,7 @@ app.post(`/.well-known/trust-token/send-rr`, async (req, res) => {
   const rr = sfv.parseList(headers["sec-redemption-record"]);
   const { value, params } = rr[0];
   const redemption_record = Buffer.from(params["redemption-record"]).toString();
-  console.log(redemption_record);
-
-  //   const { body, signature } = redemption_record;
-
-  //   // verify signature
-  //   const srr_public_key = Buffer.from(
-  //     fs.readFileSync("./keys/srr_pub_key.txt").toString(),
-  //     "base64"
-  //   );
-  //   const srr_verify = await ed25519.verify(
-  //     signature.value,
-  //     body.value,
-  //     srr_public_key
-  //   );
-  //   console.log({ srr_verify });
-
-  //   // parse SRR
-  //   const srr_body = cbor.decodeAllSync(Buffer.from(body.value))[0];
-  //   const metadata = srr_body["metadata"];
-  //   const token_hash = srr_body["token-hash"];
-  //   const client_data = srr_body["client-data"];
-  //   const key_hash = client_data["key-hash"];
-  //   const redeeming_origin = client_data["redeeming_origin"];
-  //   const redeeming_timestamp = client_data["redeeming_timestamp"];
-  //   const expiry_timestamp = srr_body["expiry-timestamp"];
+  console.log({redemption_record});
 
   // verify client_public_key
   const sec_signature = sfv.parseDict(headers["sec-signature"]);
@@ -121,31 +97,21 @@ app.post(`/.well-known/trust-token/send-rr`, async (req, res) => {
   const sig = signatures.params["sig"];
   console.log({ sig });
 
-  // TODO: debug from here
-  const client_public_key_hash = crypto
-    .createHash("sha256")
-    .update(client_public_key)
-    .digest();
-  console.log(client_public_key_hash);
-  // const public_key_verify =
-  //   client_public_key_hash.toString() === key_hash.toString();
-  // console.log({ public_key_verify });
-
+  const destination = "trust-token-issuer-demo.glitch.me";
+  
   // verify sec-signature
   const canonical_request_data = cbor.encode(
     new Map([
       ["sec-time", headers["sec-time"]],
       ["public-key", client_public_key],
-      ["destination", "trust-token-issuer-demo.glitch.me"],
+      ["destination", destination],
       ["sec-redemption-record", headers["sec-redemption-record"]],
-      [
-        "sec-trust-tokens-additional-signing-data",
-        headers["sec-trust-tokens-additional-signing-data"]
-      ]
+      ["sec-trust-tokens-additional-signing-data", headers["sec-trust-tokens-additional-signing-data"]],
     ])
   );
+  console.log(cbor.decode(canonical_request_data))
 
-  const prefix = Buffer.from("Trust Token v0");
+  const prefix = Buffer.from("TrustTokenV2");
   const signing_data = Buffer.concat([prefix, canonical_request_data]);
   const sig_verify = await ed25519.verify(sig, signing_data, client_public_key);
 
@@ -155,7 +121,7 @@ app.post(`/.well-known/trust-token/send-rr`, async (req, res) => {
     "Access-Control-Allow-Origin": "*"
   });
 
-  res.send({ srr_verify, public_key_verify, sig_verify });
+  res.send({ sig_verify });
 });
 
 const listener = app.listen(process.env.PORT, () => {
