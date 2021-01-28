@@ -85,7 +85,7 @@ app.post(`/.well-known/trust-token/send-rr`, async (req, res) => {
   const rr = sfv.parseList(headers["sec-redemption-record"]);
   const { value, params } = rr[0];
   const redemption_record = Buffer.from(params["redemption-record"]).toString();
-  console.log({redemption_record});
+  console.log({ redemption_record });
 
   // verify client_public_key
   const sec_signature = sfv.parseDict(headers["sec-signature"]);
@@ -98,7 +98,7 @@ app.post(`/.well-known/trust-token/send-rr`, async (req, res) => {
   console.log({ sig });
 
   const destination = "trust-token-issuer-demo.glitch.me";
-  
+
   // verify sec-signature
   const canonical_request_data = cbor.encode(
     new Map([
@@ -106,10 +106,13 @@ app.post(`/.well-known/trust-token/send-rr`, async (req, res) => {
       ["public-key", client_public_key],
       ["destination", destination],
       ["sec-redemption-record", headers["sec-redemption-record"]],
-      ["sec-trust-tokens-additional-signing-data", headers["sec-trust-tokens-additional-signing-data"]],
+      [
+        "sec-trust-tokens-additional-signing-data",
+        headers["sec-trust-tokens-additional-signing-data"]
+      ]
     ])
   );
-  console.log(cbor.decode(canonical_request_data))
+  console.log(cbor.decode(canonical_request_data));
 
   const prefix = Buffer.from("TrustTokenV2");
   const signing_data = Buffer.concat([prefix, canonical_request_data]);
@@ -118,7 +121,8 @@ app.post(`/.well-known/trust-token/send-rr`, async (req, res) => {
   console.log(sig_verify);
 
   res.set({
-    "Access-Control-Allow-Origin": "*"
+    "Access-Control-Allow-Origin": "*",
+    "Feature-Policy": "trust-token-redemption *"
   });
 
   res.send({ sig_verify });
