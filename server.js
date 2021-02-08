@@ -83,13 +83,14 @@ app.post(`/.well-known/trust-token/send-rr`, async (req, res) => {
   // sec-redemption-record
   // [(<issuer 1>, {"redemption-record": <SRR 1>}),
   //  (<issuer N>, {"redemption-record": <SRR N>})],
-  const rr = sfv.parseList(headers["sec-redemption-record"]);
+  const rr = sfv.decodeList(headers["sec-redemption-record"]);
+  console.log(rr);
   const { value, params } = rr[0];
   const redemption_record = Buffer.from(params["redemption-record"]).toString();
   console.log({ redemption_record });
 
   // verify client_public_key
-  const sec_signature = sfv.parseDict(headers["sec-signature"]);
+  const sec_signature = sfv.decodeDict(headers["sec-signature"]);
   console.log({ sec_signature });
 
   const signatures = sec_signature.signatures.value[0];
