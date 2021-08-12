@@ -29,11 +29,14 @@ app.get("/.well-known/trust-token/key-commitment", (req, res) => {
     .toString()
     .trim();
 
-  const key_commitment = {
+  const key_commitment = {}
+  key_commitment[protocol_version] = {
     id,
     protocol_version,
     batchsize,
-    "1": { Y, expiry }
+    "keys": {
+      "1": { Y, expiry }
+    }
   };
 
   res.set({
