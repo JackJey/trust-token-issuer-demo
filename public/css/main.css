@@ -118,3 +118,6 @@ label {
   cursor: pointer;
 }
 
+strong {
+  color: red;
+}
