@@ -1,84 +1,47 @@
 <!-- Copyright 2020 Google LLC. SPDX-License-Identifier: Apache-2.0 -->
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Trust Token issuer demo</title>
-
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      http-equiv="origin-trial"
-      content="AhRWaqWNfmRscMS6MhcPo7NvQJTokhe4Fa9DXQEBq5Uy6vb48kVQ7qBWNhYEO8I5h+SmIfvJdzy3i2ukz8Nx0AUAAABmeyJvcmlnaW4iOiJodHRwczovL3RydXN0LXRva2VuLWlzc3Vlci1kZW1vLmdsaXRjaC5tZTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MzQwODMxOTl9"
-    />
-
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate icon" href="/favicon.ico" />
-
-    <link rel="stylesheet" href="public/css/main.css" />
-
-    <script
-      src="https://cdn.jsdelivr.net/npm/cbor-js-unofficial@0.1.0-a4/cbor.min.js"
-      defer
-    ></script>
-    <script src="public/js/issuer.js" defer></script>
-  </head>
-
-  <body>
-    <main>
-      <h1>Trust Token issuer demo</h1>
-      <section>
-        <p>
-          <strong>Warning!</strong> From version 92, Chrome has used
-          TrustTokenV3. These demos are being updated to work with that
-          implementation.
-        </p>
-
-        <p>
-          The Trust Token Redeemer demo will currently result in a <code>DOMException:
-          Precondition failed during Trust Tokens operation.</code>
-        </p>
-
-        <p>We're working on a fix.</p>
-      </section>
-
-      <section>
-        <form>
-          <fieldset>
-            <legend>Are you a human?</legend>
-            <input type="checkbox" id="yes" name="human" />
-            <label for="yes">Yes! I'm a human</label>
-          </fieldset>
-        </form>
-        <ul>
-          <li id="issuing">📝 Issuing token...</li>
-          <li id="issued">🎉 Successfuly issued!</li>
-          <li id="back">🔙 Now go back to the redemption demo.</li>
-        </ul>
-        <button id="refresh">Clear token</button>
-      </section>
-    </main>
-
-    <footer>
-      <p>
-        <a href="/.well-known/trust-token/key-commitment"
-          >View key commitment data</a
-        >
-      </p>
-      <p>
-        <a href="https://trust-token-demo.glitch.me"
-          >More information about this demo</a
-        >
-      </p>
-      <p>
-        <b>Please note:</b> These demos do not provide code suitable for
-        production use. The&nbsp;Trust&nbsp;Tokens API is still experimental,
-        and is undergoing an
-        <a href="https://web.dev/origin-trials">origin trial</a> in Chrome. The
-        API and the demos may change without notice at any time.
-      </p>
-      <p>This is not a Google product.</p>
-    </footer>
-  </body>
+<head>
+  <title>Trust Token issuer demo</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="origin-trial" content="AhRWaqWNfmRscMS6MhcPo7NvQJTokhe4Fa9DXQEBq5Uy6vb48kVQ7qBWNhYEO8I5h+SmIfvJdzy3i2ukz8Nx0AUAAABmeyJvcmlnaW4iOiJodHRwczovL3RydXN0LXRva2VuLWlzc3Vlci1kZW1vLmdsaXRjaC5tZTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MzQwODMxOTl9">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate icon" href="/favicon.ico">
+  <link rel="stylesheet" href="public/css/main.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/cbor-js-unofficial@0.1.0-a4/cbor.min.js"></script>
+  <script defer src="public/js/issuer.js"></script>
+</head>
+<body>
+  <main>
+    <h1>Trust Token issuer demo</h1>
+    <section>
+      <p><strong>Warning!</strong> From version 92, Chrome has used TrustTokenV3. These demos are being updated to work with that implementation.</p>
+      <p>The Trust Token Redeemer demo will currently result in a <code>DOMException: Precondition failed during Trust Tokens operation.</code></p>
+      <p>We're working on a fix.</p>
+    </section>
+    <section>
+      <form>
+        <fieldset>
+          <legend>Are you a human?</legend>
+          <input type="checkbox" id="yes" name="human">
+          <label for="yes">Yes! I'm a human</label>
+        </fieldset>
+      </form>
+      <ul>
+        <li id="issuing">📝 Issuing token...</li>
+        <li id="issued">🎉 Successfuly issued!</li>
+        <li id="back">🔙 Now go back to the redemption demo.</li>
+      </ul>
+      <button id="refresh">Clear token</button>
+    </section>
+  </main>
+  <footer>
+    <p><a href="/.well-known/trust-token/key-commitment">View key commitment data</a></p>
+    <p><a href="https://trust-token-demo.glitch.me">More information about this demo</a></p>
+    <p><b>Please note:</b> These demos do not provide code suitable for production use. The&nbsp;Trust&nbsp;Tokens API is still experimental, and is undergoing an <a href="https://web.dev/origin-trials">origin trial</a> in Chrome. The API and the demos may change without notice at any time.</p>
+    <p>This is not a Google product.</p>
+  </footer>
+</body>
 </html>
