@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "\e[0;31mISSUE RESPONSE(%lu)\e[0m: %s\n\n", response_base64_len, response_base64);
 
     // output for stdout
-    printf("%s\n", response_base64);
+    printf("%s", response_base64);
 
     return EXIT_SUCCESS;
   }
