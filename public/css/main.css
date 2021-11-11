@@ -121,3 +121,7 @@ label {
 strong {
   color: red;
 }
+
+em {
+  font-weight: bold;
+}
