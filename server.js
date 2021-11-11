@@ -53,9 +53,8 @@ app.post(`/.well-known/trust-token/issuance`, async (req, res) => {
   console.log({ sec_trust_token });
   const result = await exec(`./bin/main --issue ${sec_trust_token}`);
   const token = result.stdout;
-  res.set({
-    "Access-Control-Allow-Origin": "*"
-  });
+  console.log({ token })
+  res.set({ "Access-Control-Allow-Origin": "*" });
   res.append("sec-trust-token", token);
   res.send();
 });
