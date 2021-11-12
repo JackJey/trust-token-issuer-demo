@@ -44,7 +44,8 @@ app.get("/.well-known/trust-token/key-commitment", (req, res) => {
     "Content-Type": "application/json; charset=utf-8"
   });
 
-  res.send(JSON.stringify(key_commitment, "", " "));
+  const json = JSON.stringify(key_commitment, "", " ");
+  res.send(json);
 });
 
 app.post(`/.well-known/trust-token/issuance`, async (req, res) => {
