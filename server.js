@@ -34,7 +34,7 @@ app.get("/.well-known/trust-token/key-commitment", (req, res) => {
     id,
     protocol_version,
     batchsize,
-    "keys": {
+    keys: {
       "1": { Y, expiry }
     }
   };
