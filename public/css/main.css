@@ -125,3 +125,8 @@ strong {
 em {
   font-weight: bold;
 }
+
+pre {
+  width: 100%;
+  overflow: scroll;
+}

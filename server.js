@@ -34,7 +34,7 @@ app.get("/.well-known/trust-token/key-commitment", (req, res) => {
     id,
     protocol_version,
     batchsize,
-    "keys": {
+    keys: {
       "1": { Y, expiry }
     }
   };
@@ -44,7 +44,8 @@ app.get("/.well-known/trust-token/key-commitment", (req, res) => {
     "Content-Type": "application/json; charset=utf-8"
   });
 
-  res.send(JSON.stringify(key_commitment, "", " "));
+  const json = JSON.stringify(key_commitment, "", " ");
+  res.send(json);
 });
 
 app.post(`/.well-known/trust-token/issuance`, async (req, res) => {
@@ -53,9 +54,8 @@ app.post(`/.well-known/trust-token/issuance`, async (req, res) => {
   console.log({ sec_trust_token });
   const result = await exec(`./bin/main --issue ${sec_trust_token}`);
   const token = result.stdout;
-  res.set({
-    "Access-Control-Allow-Origin": "*"
-  });
+  console.log({ token })
+  res.set({ "Access-Control-Allow-Origin": "*" });
   res.append("sec-trust-token", token);
   res.send();
 });
