@@ -12,16 +12,11 @@ function base64decode(str) {
 document.on("DOMContentLoaded", async e => {
   const ISSUER = location.origin;
 
-  const res = await fetch("/.well-known/trust-token/key-commitment")
-  const json = await res.json()
-  console.log({json})
-  document.querySelector('#key-commitment').textContent = JSON.stringify(json, ' ', ' ')
-
   $("#yes").on("click", async () => {
     $("#issuing").style.visibility = "visible";
 
     // issuer request
-    await fetch(`/.well-known/trust-token/issuance`, {
+    await fetch("/.well-known/trust-token/issuance", {
       method: "POST",
       trustToken: {
         type: "token-request",
