@@ -1,7 +1,6 @@
 // Copyright 2020 Google LLC. SPDX-License-Identifier: Apache-2.0
 
 import * as fs from "fs";
-import * as crypto from "crypto";
 import * as childProcess from "child_process";
 import * as util from "util";
 import * as sfv from "structured-field-values";
@@ -12,6 +11,8 @@ import express from "express";
 const exec = util.promisify(childProcess.exec);
 
 const { trust_token } = JSON.parse(fs.readFileSync("./package.json"));
+const { ISSUER, TRUST_TOKEN_VERSION, protocol_version, batchsize, expiry, id } = trust_token;
+const Y = fs.readFileSync("./keys/pub_key.txt").toString().trim();
 
 const app = express();
 
@@ -23,11 +24,6 @@ app.get("/", (req, res) => {
 
 app.get("/.well-known/trust-token/key-commitment", (req, res) => {
   console.log(req.path);
-  const { ISSUER, protocol_version, batchsize, expiry, id } = trust_token;
-  const Y = fs
-    .readFileSync("./keys/pub_key.txt")
-    .toString()
-    .trim();
 
   const key_commitment = {}
   key_commitment[protocol_version] = {
@@ -102,14 +98,12 @@ app.post(`/.well-known/trust-token/send-rr`, async (req, res) => {
   const sig = signatures.params["sig"];
   console.log({ sig });
 
-  const destination = "trust-token-issuer-demo.glitch.me";
-
   // verify sec-signature
   const canonical_request_data = cbor.encode(
     new Map([
       ["sec-time", headers["sec-time"]],
       ["public-key", client_public_key],
-      ["destination", destination],
+      ["destination", ISSUER],
       ["sec-redemption-record", headers["sec-redemption-record"]],
       [
         "sec-trust-tokens-additional-signing-data",
@@ -119,7 +113,7 @@ app.post(`/.well-known/trust-token/send-rr`, async (req, res) => {
   );
   console.log(cbor.decode(canonical_request_data));
 
-  const prefix = Buffer.from("TrustTokenV3");
+  const prefix = Buffer.from(TRUST_TOKEN_VERSION);
   const signing_data = Buffer.concat([prefix, canonical_request_data]);
   const sig_verify = await ed25519.verify(sig, signing_data, client_public_key);
 
